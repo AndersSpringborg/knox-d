@@ -1,9 +1,9 @@
 from gensim.models import Phrases
 from gensim.models.phrases import Phraser
 
-from preprocess.bigrams import bigramDetection
-from preprocess.converter import convertToCsv
-from preprocess.cleaner import cleaning
+from Preprocess.bigrams import bigramDetection
+from Preprocess.converter import convertToCsv
+from Preprocess.cleaner import cleaning
 import pandas as pd
 import time
 import re
@@ -38,4 +38,4 @@ model = Word2Vec(min_count=2,
 
 model.build_vocab(sentences, progress_per=10000)
 model.train(sentences, total_examples=model.corpus_count, epochs=30, report_delay=1)
-model.save('Tmp/winemodel')
+model.save('Models/winemodel')
