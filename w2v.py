@@ -25,7 +25,7 @@ def createw2vmodel():
     sentences = bigramDetection(df)
 
 
-    # Train the model
+    # Train the spacy_model
     cores = multiprocessing.cpu_count() # Count the number of cores in a computer
     model = Word2Vec(min_count=2,
                          window=10,
