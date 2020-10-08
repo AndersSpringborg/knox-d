@@ -1,5 +1,5 @@
-from Preprocess.bigrams import bigram_detection
-from Preprocess.cleaner import cleaning
+from preprocess.bigrams import bigram_detection
+from preprocess.cleaner import cleaning
 import pandas as pd
 import multiprocessing
 from gensim.models import Word2Vec
