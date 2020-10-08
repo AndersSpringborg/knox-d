@@ -1,5 +1,4 @@
-
-def linewrapper(input_file, wrap_length):
+def line_wrapper(input_file, wrap_length):
     with open(input_file, 'r') as input_file, open('Data/output.txt', 'w') as output_file:
         for line in input_file:
             words = line.split()
@@ -8,16 +7,17 @@ def linewrapper(input_file, wrap_length):
                 if i != 0 and i % (wrap_length - 1) == 0:
                     output_file.write("\n")
 
-def splitFile(fname, lnumber):
-    lines_per_file = lnumber
+
+def split_file(file_name, lines_per_smallfile):
     num = 0
     smallfile = None
-    with open(fname) as bigfile:
-        for lineno, line in enumerate(bigfile):
-            if lineno % lines_per_file == 0:
+    with open(file_name) as bigfile:
+        for line_number, line in enumerate(bigfile):
+            if line_number % lines_per_smallfile == 0:
                 if smallfile:
                     smallfile.close()
-                small_filename = 'Data/small_file_{}.txt'.format(num)
+
+                small_filename = f'Data/small_file_{num}.txt'
                 smallfile = open(small_filename, "w")
                 num += 1
             smallfile.write(line)
