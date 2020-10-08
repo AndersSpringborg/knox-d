@@ -1,4 +1,4 @@
-from Preprocess.bigrams import bigramDetection
+from Preprocess.bigrams import bigram_detection
 from Preprocess.cleaner import cleaning
 import pandas as pd
 import multiprocessing
@@ -15,7 +15,7 @@ def createw2vmodel():
     # cleaning(df)
 
     # Create bigrams
-    sentences = bigramDetection(df)
+    sentences = bigram_detection(df)
 
     # Train the model
     cores = multiprocessing.cpu_count() # Count the number of cores in a computer
