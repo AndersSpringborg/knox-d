@@ -1,4 +1,3 @@
-import gensim
 from gensim.models import Word2Vec
 
 amount_of_words = 0

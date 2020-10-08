@@ -7,7 +7,7 @@ import pandas as pd
 nlp = spacy.load('en_core_web_sm')
 
 
-def cleaning(df):
+def cleaning(df: pd.DataFrame):
     # Remove missing values if any
     if not df.isnull().sum().empty:
         df = df.dropna().reset_index(drop=True)
