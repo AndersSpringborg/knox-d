@@ -1,5 +1,5 @@
 
-def findsimilarities(w2v_model, glove_model, pre_model):
+def find_similarities(w2v_model, glove_model, pre_model):
     # Initialize the return variables
     w2v_score_list = list()
     glove_score_list = list()
@@ -17,7 +17,7 @@ def findsimilarities(w2v_model, glove_model, pre_model):
             pre_list = pre_model.most_similar(word, topn=5)
 
             # Now compare the top 5 most similar words from glove and word2vec with the google result
-            w2v_score, glove_score = comparesimilarities(w2v_list, glove_list, pre_list)
+            w2v_score, glove_score = compare_similarities(w2v_list, glove_list, pre_list)
 
             # Add the result to the score list for both w2v and glove
             w2v_score_list.append(w2v_score)
@@ -27,11 +27,11 @@ def findsimilarities(w2v_model, glove_model, pre_model):
     return sum(w2v_score_list), sum(glove_score_list)
 
 
-def comparesimilarities(w2v_list, glove_list, spacy_list):
+def compare_similarities(w2v_list, glove_list, spacy_list):
     # Compare the similarities from the Word2Vec list with the Google list
-    #w2v_result = sum(element in google_list for element in w2v_list)
+    # w2v_result = sum(element in google_list for element in w2v_list).
     # Compare the similarities from the Word2Vec list with the Google list
-    #glove_result = sum(element in google_list for element in glove_list)
+    # glove_result = sum(element in google_list for element in glove_list).
 
     # Other method:
     # Unzip the tuples using zip()
