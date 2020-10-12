@@ -1,5 +1,7 @@
 #CUSTOM
 .idea/*
+venv/
+[Dd]ata/
 
 
 # Created by .ignore support plugin (hsz.mobi)
