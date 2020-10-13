@@ -7,9 +7,9 @@ from gensim.test.utils import get_tmpfile
 from WordEmbeddings.word2vec_module import createw2vmodel
 from WordEmbeddings.spacy_module import createspacymodel
 from WordEmbeddings.glove_module import createglovemodel
-from preprocess.bigrams import bigramDetection
-from preprocess.cleaner import cleaning
-from Tests.test_module import findsimilarities
+from Preprocess.bigrams import bigram_detection
+from Preprocess.cleaner import cleaning
+from quality_analysis.test_module import find_similarities
 from gensim.models import Word2Vec
 from gensim.models import KeyedVectors
 import pandas as pd
