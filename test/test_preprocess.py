@@ -1,5 +1,5 @@
 import pytest
-from preprocess.cleaner import Cleaner
+from Preprocess.cleaner import Cleaner
 
 
 class Test_Cleaner:

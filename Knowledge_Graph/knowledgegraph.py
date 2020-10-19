@@ -1,9 +1,9 @@
 
-
 class KnowledgeGraph:
     triples = []
     sentences = []
     vocab: object
+
     def __init__(self, _sentences):
         self.sentences = _sentences
         self.construct_triples()
@@ -18,15 +18,16 @@ class KnowledgeGraph:
         subj = ''
         obj = ''
         for token in sentence:
-            if token.dep_.find("subj"):
+            if 'subj' in token.dep_:
                 subj = token.text
-            elif token.dep_.find("obj"):
+            elif 'obj' in token.dep_:
                 obj = token.text
             else:
                 continue
+
         return subj, obj
 
-    def get_subject_and_object_relations(self, sentences):
+    def get_subject_and_object_relations(self, sentence):
         relation = ""
 
         return relation
