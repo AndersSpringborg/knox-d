@@ -2,7 +2,7 @@
 .idea/*
 venv/
 [Dd]ata/
-
+*/__pycache__
 
 # Created by .ignore support plugin (hsz.mobi)
 ### VirtualEnv template
