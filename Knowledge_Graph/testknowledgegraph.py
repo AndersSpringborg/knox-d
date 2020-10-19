@@ -1,5 +1,5 @@
-from tokencontainer import Token, GrammarCategories
-from Knowledge_Graph.knowledgegraph import KnowledgeGraph
+from tokencontainer import Token
+from Knowledge_Graph.knowledgegraph2 import KnowledgeGraph
 
 sentences = []
 sentence1 = []
