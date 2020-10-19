@@ -44,3 +44,5 @@ print(model.word_vec('sweet'))
 #enunmarator = (869 * 5)
 #print('w2v score:   ', w2v_score, " pct: ", w2v_score/enunmarator )
 #print('glove score: ', glove_score, " pct: ", glove_score/enunmarator)
+
+
