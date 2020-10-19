@@ -1,8 +1,11 @@
 #CUSTOM
+knox-env/
 .idea/*
 venv/
 [Dd]ata/
 */__pycache__
+.vscode/
+
 
 # Created by .ignore support plugin (hsz.mobi)
 ### VirtualEnv template
