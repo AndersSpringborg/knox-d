@@ -4,11 +4,11 @@ import subprocess
 from gensim.scripts.glove2word2vec import glove2word2vec
 from gensim.test.utils import get_tmpfile
 
-from WordEmbeddings.word2vec_module import createw2vmodel
-from WordEmbeddings.spacy_module import createspacymodel
-from WordEmbeddings.glove_module import createglovemodel
-from Preprocess.bigrams import bigram_detection
-from Preprocess.cleaner import cleaning
+from word_embedding.word2vec_module import createw2vmodel
+from word_embedding.spacy_module import createspacymodel
+from word_embedding.glove_module import createglovemodel
+from preprocess.bigrams import bigram_detection
+from preprocess.cleaner import cleaning
 from quality_analysis.test_module import find_similarities
 from gensim.models import Word2Vec
 from gensim.models import KeyedVectors
