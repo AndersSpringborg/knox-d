@@ -1,7 +1,9 @@
 #CUSTOM
+knox-env/
 .idea/*
 venv/
 [Dd]ata/
+.vscode/
 
 
 # Created by .ignore support plugin (hsz.mobi)
