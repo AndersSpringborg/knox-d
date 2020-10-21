@@ -4,22 +4,27 @@ from tokencontainer import Token
 
 from Knowledge_Graph.knowledgegraph import KnowledgeGraph
 
+
 class TestKnowledgeGraph:
 
     def setup_method(self):
-        list = []
-        self.kg = KnowledgeGraph(list)
+        self.kg = KnowledgeGraph()
 
-    def test_get_subject_and_object_pair(self):
+        # Erase file content before testing
+        with open('knowledgegraph.txt', 'w'): pass
+
+    def test_process_sentence(self):
+
         # Arrange
-        sentence = [Token('martin', 'subj'),
-                    Token('likes', 'verb'),
-                    Token('computerspil', 'obj')]
+        sentence = [[Token('martin', 'subj'),
+                     Token('likes', 'adj'),
+                     Token('computerspil', 'obj')]]
 
-        expected = ('martin', 'computerspil')
+        expected = 'martin --> likes --> computerspil\n'
 
         # Act
-        result = self.kg.get_subject_and_object_pair(sentence)
+        self.kg.update(sentence)
+        result = self.kg.get_knowledge_graph()
 
         # Assert
-        assert expected == result
+        assert result == expected
