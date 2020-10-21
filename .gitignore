@@ -1,5 +1,5 @@
 #CUSTOM
-*/.pytest_cache
+.pytest_cache
 knox-env/
 .idea/*
 venv/
