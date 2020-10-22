@@ -1,7 +1,8 @@
 import abc
+from abc import ABC
 
 
-class Cleaner(abc.ABC):
+class Cleaner(ABC):
 
     @abc.abstractmethod
     def bigrams(self, words: str) -> [tuple]:
