@@ -1,10 +1,12 @@
-from enum import Enum
+from enum import Enum, auto
 
 class GrammarCategories(Enum):
-    subj = 1
-    obj = 2
-    rel = 3
-    other = 4
+    subj = auto()
+    obj = auto()
+    rel = auto()
+    adj = auto()
+    noun = auto()
+    other = auto()
 
 
 class Token:
