@@ -50,14 +50,3 @@ class TestKnowledgeGraph:
         # Assert
         assert_frame_equal(result, expected)
 
-
-    def test_graph_illustration(self):
-        # Arrange
-
-        sentence = [[Token('martin', 'subj'),
-                     Token('likes', 'adj'),
-                     Token('computerspil', 'obj')]]
-
-        self.kg.update(sentence)
-        self.kg.show_graph()
-        pass
