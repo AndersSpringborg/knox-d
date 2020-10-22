@@ -1,4 +1,6 @@
 
+import pandas as pd
+
 class Triple:
     subj = ''
     obj = ''
@@ -49,13 +51,12 @@ class KnowledgeGraph:
         else:
             self.__create_branch(triple)
 
-
     def __relation_and_object_exists(self, triple):
         pass
 
     def __create_branch(self, triple):
-        with open(self.KGFILE, 'a+') as f:
-            f.write(self.__print_triple(triple))
+        self.__save_to_file(triple)
+
 
 
     def __update_branch(self, triple):
@@ -64,6 +65,9 @@ class KnowledgeGraph:
     def __create_node(self, triple):
         pass
 
+    def __save_to_file(self, triple):
+        with open(self.KGFILE, 'a+') as f:
+            f.write(self.__print_triple(triple))
 
     def __print_triple(self, triple):
         return triple.subj + ' --> ' + triple.rel + ' --> ' + triple.obj + '\n'
