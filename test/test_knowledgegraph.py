@@ -1,8 +1,11 @@
 import pytest
+import pandas as pd
+import os.path
+from pandas._testing import assert_frame_equal
 
 from tokencontainer import Token
 
-from Knowledge_Graph.knowledgegraph import KnowledgeGraph
+from Knowledge_Graph.knowledgegraph import KnowledgeGraph, Triple
 
 
 class TestKnowledgeGraph:
@@ -13,18 +16,48 @@ class TestKnowledgeGraph:
         # Erase file content before testing
         with open('knowledgegraph.txt', 'w'): pass
 
-    def test_process_sentence(self):
+    def test_creates_csv_file_in_correct_folder(self):
+        # Arrange
+        filepath = 'knowledgegraphtestfile.csv'
+        sentence = [[Token('martin', 'subj'),
+                     Token('likes', 'adj'),
+                     Token('computerspil', 'obj')]]
+
+        # Act
+        self.kg.update(sentence)
+        file_exists = os.path.isfile(filepath)
+
+        # Assert
+        assert file_exists
+
+    def test_validate_file_content(self):
 
         # Arrange
         sentence = [[Token('martin', 'subj'),
                      Token('likes', 'adj'),
                      Token('computerspil', 'obj')]]
 
-        expected = 'martin --> likes --> computerspil\n'
+        triple = Triple('martin', 'likes', 'computerspil')
+
+        expected = pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]})
 
         # Act
         self.kg.update(sentence)
-        result = self.kg.get_knowledge_graph()
+        result = pd.read_csv('knowledgegraphtestfile.csv')
+        print(result)
+        print(expected)
 
         # Assert
-        assert result == expected
+        assert_frame_equal(result, expected)
+
+
+    def test_graph_illustration(self):
+        # Arrange
+
+        sentence = [[Token('martin', 'subj'),
+                     Token('likes', 'adj'),
+                     Token('computerspil', 'obj')]]
+
+        self.kg.update(sentence)
+        self.kg.show_graph()
+        pass

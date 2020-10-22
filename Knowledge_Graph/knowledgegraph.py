@@ -1,5 +1,9 @@
-
 import pandas as pd
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+pd.set_option('display.max_colwidth', 200)
+
 
 class Triple:
     subj = ''
@@ -15,12 +19,26 @@ class Triple:
 class KnowledgeGraph:
     KGFILE = 'knowledgegraph.txt'
 
+    column_names = ['subject', 'relation', 'object']
+
+    df = pd.DataFrame(columns=column_names)
+
+
     def __init__(self):
         pass
 
     def update(self, sentences: list):
         for sentence in sentences:
             self.__process_triple(self.__process_sentence(sentence))
+
+    def show_graph(self):
+        G = nx.from_pandas_edgelist(self.df, 'subject', 'object', edge_attr=True, create_using=nx.MultiDiGraph())
+        plt.figure(figsize=(12, 12))
+
+        pos = nx.spring_layout(G)
+        nx.draw(G, pos, edge_color='black', width=1, linewidths=1,
+                node_size=500, node_color='blue', alpha=0.9, with_labels=True)
+        plt.show()
 
     def __process_sentence(self, sentence: list):
         subj = ''
@@ -55,9 +73,8 @@ class KnowledgeGraph:
         pass
 
     def __create_branch(self, triple):
-        self.__save_to_file(triple)
-
-
+        self.df = self.df.append(pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
+        self.__save_to_file()
 
     def __update_branch(self, triple):
         pass
@@ -65,9 +82,8 @@ class KnowledgeGraph:
     def __create_node(self, triple):
         pass
 
-    def __save_to_file(self, triple):
-        with open(self.KGFILE, 'a+') as f:
-            f.write(self.__print_triple(triple))
+    def __save_to_file(self):
+        self.df.to_csv('knowledgegraphtestfile.csv', index=False)
 
     def __print_triple(self, triple):
         return triple.subj + ' --> ' + triple.rel + ' --> ' + triple.obj + '\n'
