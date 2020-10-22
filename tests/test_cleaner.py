@@ -1,15 +1,20 @@
 import pytest
-from preprocess.cleaner import Cleaner
+from preprocess.cleaner_imp import CleanerImp
 
 
-class Test_Cleaner:
+class TestCleaner:
+
+    def test_multiple_is_in_returned_list(self):
+        sentence = "Kaare is a tree"
+
+        new_bigrams = self.cleaner.bigrams(sentence)
+        expected_bigrams = [('Kaare', 'is'), ('is', 'a'), ('a', 'tree')]
+        assert all(bigrams in expected_bigrams for bigrams in new_bigrams)
 
     def setup_method(self):
-        self.cleaner = Cleaner()
-
+        self.cleaner = CleanerImp()
 
     def test_init_cleaner(self):
-
         assert self.cleaner is not None
 
     def test_cleaner_makes_words_to_lowercase(self):
@@ -43,7 +48,6 @@ class Test_Cleaner:
         cleaned_text = self.cleaner.numbers_to_text(text)
 
         assert expected_text == cleaned_text
-    
 
     def test_cleaner_should_textity_long_number(self):
         text = "34567"
@@ -56,15 +60,15 @@ class Test_Cleaner:
     def test_cleaner_should_textity_double_digits(self):
         text = "54"
         expected_text = "five four"
-        
+
         cleaned_text = self.cleaner.numbers_to_text(text)
 
         assert expected_text == cleaned_text
-    
+
     def test_remove_duplicates_in_string_list(self):
-        text_list =['Hej mit navn er Torben.',
-                    'Hej mit navn er Solvej.', 
-                    'Hej mit navn er Torben.']
+        text_list = ['Hej mit navn er Torben.',
+                     'Hej mit navn er Solvej.',
+                     'Hej mit navn er Torben.']
         expected_text = ['Hej mit navn er Torben.',
                          'Hej mit navn er Solvej.']
 
@@ -78,7 +82,7 @@ class Test_Cleaner:
         lemma_word = self.cleaner.lemmatize(sentence)
 
         assert lemma_word == 'walk'
-    
+
     def test_lemmatize_feet_to_foot(self):
         sentence = "feet"
 
@@ -92,7 +96,7 @@ class Test_Cleaner:
         lemmatized = self.cleaner.lemmatize(sentence)
 
         assert lemmatized == "walk foot"
-    
+
     def xtest_valuta_gets_lemmatised_to_text(self):
         sentence = "Many $"
 
@@ -100,4 +104,4 @@ class Test_Cleaner:
 
         assert lemmatized == "many dollar"
 
-#Test ideas
+# Test ideas
