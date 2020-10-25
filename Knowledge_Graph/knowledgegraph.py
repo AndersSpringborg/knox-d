@@ -33,6 +33,34 @@ class KnowledgeGraph:
         nx.draw_networkx_edge_labels(G, pos=pos)
         plt.show()
 
+    def create_relations(self, content: Content):
+        triples = []
+        triples.extend(self.__create_relations_for_manual(content))
+        triples.extend(self.__create_relations_for_sections(content))
+
+        self.__create_branches(triples)
+
+        self.__save_to_file()
+
+    def __create_relations_for_manual(self, content: Content):
+        triples = []
+        triples.append(Triple("manual", "publishedBy", content.publisher))
+        triples.append(Triple("manual", "publishedAt", content.publishedAt))
+        triples.append(Triple("manual", "describes", content.title))
+
+        for sec in content.sections:
+            triples.append(Triple("manual", "contains", sec.header))
+
+        return triples
+
+    def __create_relations_for_sections(self, content):
+        triples = []
+        for sec in content.sections:
+            triples.append(Triple(sec.header, "isAt", sec.page))
+
+        return triples
+
+
     def __process_sentence(self, sentence):
         subj = ''
         obj = ''
@@ -65,6 +93,10 @@ class KnowledgeGraph:
     def __relation_and_object_exists(self, triple):
         pass
 
+    def __create_branches(self, triples):
+        for triple in triples:
+            self.df = self.df.append(pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
+
     def __create_branch(self, triple):
         self.df = self.df.append(pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
 
@@ -84,6 +116,7 @@ class KnowledgeGraph:
 
     def __print_triple(self, triple):
         return triple.subj + ' --> ' + triple.rel + ' --> ' + triple.obj + '\n'
+
 
 
 
