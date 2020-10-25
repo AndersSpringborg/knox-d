@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import os
 from Resources.TripleContainer import Triple
+from Resources.JsonWrapper import Content
 
 
 class KnowledgeGraph:

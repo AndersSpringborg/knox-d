@@ -16,29 +16,28 @@ class TestLoader:
             result = json.load(file)
 
         # Assert
-        isinstance(result, dict)
+        assert isinstance(result, dict)
 
     def test_load_json_file_throws_exception_if_invalid_path(self):
         # Arrange
         invalid_path = 'some invalid path'
-        expected_error = FileNotFoundError
 
         # Act
 
         # Assert
-        with pytest.raises(expected_error):
-            assert load_json_file(invalid_path)
+        with pytest.raises(FileNotFoundError):
+            load_json_file(invalid_path)
 
-    def test_load_json_file_throws_exeption_if_json_file_is_empty(self):
+
+    def test_load_json_file_throws_exception_if_json_file_is_empty(self):
         # Arrange
         empty_file_path = "../TestData/empty_test_file.json"
-        expected_error = IOError
 
         # Act
 
         # Assert
-        with pytest.raises(expected_error):
-            assert load_json_file(empty_file_path)
+        with pytest.raises(IOError):
+            load_json_file(empty_file_path)
 
     def test_assign_correct_publisher_to_content(self):
         # Arrange
