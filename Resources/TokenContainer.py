@@ -8,3 +8,5 @@ class Token:
     # The category from the cluster
     dep_ = ''
 
+    pos_ = ''
+

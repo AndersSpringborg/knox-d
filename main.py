@@ -22,7 +22,7 @@ import pandas as pd
 
 
 # Load models:
-w2v_model = Word2Vec.load('Models/winemodel')
+#w2v_model = Word2Vec.load('Models/winemodel')
 
 #glove_file = 'GloveSetup/vectors.txt'
 #tmp_file = get_tmpfile('test_w2v.txt')
@@ -33,9 +33,9 @@ w2v_model = Word2Vec.load('Models/winemodel')
 # their vector representations rather than a complete word2vec model!
 # pre_model = KeyedVectors.load('Models/premodel')
 
-model = w2v_model.wv
+#model = w2v_model.wv
 
-print(model.word_vec('sweet'))
+#print(model.word_vec('sweet'))
 
 # Run test on most similar results
 
