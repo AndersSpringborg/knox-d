@@ -1,6 +1,10 @@
 from enum import Enum, auto
 
+
 class GrammarCategories(Enum):
+    """
+    Grammatical categories for knox data
+    """
     subj = auto()
     obj = auto()
     rel = auto()
@@ -10,6 +14,9 @@ class GrammarCategories(Enum):
 
 
 class Token:
+    """
+    delete some day
+    """
     def __init__(self, _name, _cluster_cat):
         self.name = _name
         self.cluster_cat = _cluster_cat
@@ -23,8 +30,5 @@ class Token:
 
     # The grammar_cat can be decided on behalf of the cluster_cat. i.e:
     # Two clusters containing relation words might be called REL1 and REL2
-    # Find the tokens with cluster_cat = REL 1 || REL 2 and set grammar_cat to grammar_categories.rel
-
-
-
-
+    # Find the tokens with cluster_cat = REL 1 || REL 2 and set grammar_cat
+    # to grammar_categories.rel

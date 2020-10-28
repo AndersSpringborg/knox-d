@@ -1,12 +1,13 @@
-import spacy
 import re
-import time
-import pandas as pd
-from preprocess.cleaner import Cleaner
+import spacy
 import nltk
+from preprocess.cleaner import Cleaner
 
 
 class CleanerImp(Cleaner):
+    """
+    First implementation of super class
+    """
 
     def bigrams(self, words: str) -> [tuple]:
         word_tokens = nltk.word_tokenize(words)
@@ -59,11 +60,11 @@ class CleanerImp(Cleaner):
     def remove_duplicates(self, str_list):
         return list(set(str_list))
 
-    def lemmatize(self, word):
+    def lemmatize(self, words: str):
         # Initialize spacy 'en' model, keeping only tagger component needed for lemmatization
         nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
 
-        doc = nlp(word)
+        doc = nlp(words)
 
         return " ".join([token.lemma_ for token in doc])
 

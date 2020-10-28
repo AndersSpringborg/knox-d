@@ -3,7 +3,10 @@ from abc import ABC
 
 
 class Cleaner(ABC):
-
+    """
+    A class that have the responsibility to clean strings.
+    It handles preprocessing
+    """
     @abc.abstractmethod
     def bigrams(self, words: str) -> [tuple]:
         """

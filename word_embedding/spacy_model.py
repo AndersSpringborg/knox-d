@@ -1,9 +1,13 @@
-from enum import Enum, auto
 import spacy
 from tokencontainer import GrammarCategories
+from word_embedding.converter import Converter
+from word_embedding.token import Token
 
 
 class SpacyModel:
+    """
+    This is a implementations of the abstract class model, using spacy
+    """
     def load(self, sentence: str):
         self.words = sentence
         self.spacytokens = self.model(sentence)
@@ -38,95 +42,5 @@ class SpacyModel:
             "NNP": GrammarCategories.noun}
         if space_pos_tag not in converter.keys():
             return GrammarCategories.other
-        else:
-            return converter[space_pos_tag]
 
-
-class Dependency(Enum):
-    root = auto()
-    nsubj = auto()
-    acl = auto()
-    acomp = auto()
-    advcl = auto()
-    advmod = auto()
-    agent = auto()
-    amod = auto()
-    appos = auto()
-    attr = auto()
-    aux = auto()
-    auxpass = auto()
-    case = auto()
-    cc = auto()
-    ccomp = auto()
-    compound = auto()
-    conj = auto()
-    cop = auto()
-    csubj = auto()
-    csubjpass = auto()
-    dative = auto()
-    dep = auto()
-    det = auto()
-    dobj = auto()
-    expl = auto()
-    intj = auto()
-    mark = auto()
-    meta = auto()
-    neg = auto()
-    nn = auto()
-    nounmod = auto()
-    npmod = auto()
-    nsubjpass = auto()
-    nummod = auto()
-    oprd = auto()
-    obj = auto()
-    obl = auto()
-    parataxis = auto()
-    pcomp = auto()
-    pobj = auto()
-    poss = auto()
-    preconj = auto()
-    prep = auto()
-    prt = auto()
-    punct = auto()
-    quantmod = auto()
-    relcl = auto()
-    xcomp = auto()
-    other = auto()
-
-
-class Token:
-    pos_tag: GrammarCategories
-    dep: Dependency
-    name = ""
-
-    def __init__(self, name, pos_tag=None, dep=None):
-        self.name = name
-        self.pos_tag = pos_tag
-        self.dep = dep
-
-    def __eq__(self, other):
-        return self.name == other.name
-
-    def __repr__(self):
-        return f"Token: name:{self.name}"
-
-
-class Converter():
-    @staticmethod
-    def dependency(dep: str) -> Dependency:
-        converter = {
-            "nsubj": Dependency.nsubj,
-            "pobj": Dependency.pobj,
-            "aux": Dependency.aux,
-            "ROOT": Dependency.root,
-            "prep": Dependency.prep,
-            "pcomp": Dependency.pcomp,
-            "compound": Dependency.compound,
-            "dobj": Dependency.dobj,
-            "quantmod": Dependency.quantmod,
-        }
-
-        if dep not in converter.keys():
-            return Dependency.other
-        else:
-            return converter[dep]
+        return converter[space_pos_tag]
