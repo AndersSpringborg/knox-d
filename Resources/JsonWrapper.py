@@ -5,55 +5,50 @@ from typing import List
 
 
 class Paragraph:
-    page: str
-    text: str
+    page: str = ''
+    text: str = ''
 
-    def __init__(self, data: dict):
-        if 'page' in data.keys():
+    def __init__(self, data: dict = None):
+        if data:
             self.page = data.get("page", "")
-
-        if 'text' in data.keys():
             self.text = data.get("text", "")
 
 
 class Section:
-    page: str
-    header: str
-    paragraphs: List[Paragraph]
+    page: str = ''
+    header: str = ''
+    paragraphs: List[Paragraph] = []
 
-    def __init__(self, data: dict):
-        if 'page' in data.keys():
+    def __init__(self, data: dict = None):
+        if data:
             self.page = data.get("page", "")
-
-        if 'header' in data.keys():
             self.header = data.get("header", "")
 
-        if 'paragraphs' in data.keys():
-            self.paragraphs: List[Paragraph] = []
-            json_paragraphs = data['paragraphs'].get("items", [])
-            for para in json_paragraphs:
-                self.paragraphs.append(Paragraph(para['properties']))
+            if 'paragraphs' in data.keys():
+                self.paragraphs: List[Paragraph] = []
+                json_paragraphs = data['paragraphs'].get("items", [])
+                for para in json_paragraphs:
+                    self.paragraphs.append(Paragraph(para['properties']))
 
 
 class Content:
-    publisher: str
-    publishedAt: str
-    title: str
-    sections: List[Section]
+    publisher: str = ''
+    publishedAt: str = ''
+    title: str = ''
+    sections: List[Section] = []
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict = None):
 
-        if 'publisher' in data.keys():
+        if data:
             self.publisher = data.get("publisher", "")
 
-        if 'publishedAt' in data.keys():
             self.publishedAt = data.get("publishedAt", "")
 
-        if 'title' in data.keys():
             self.title = data.get("title", "")
 
-        if 'sections' in data.keys():
             self.sections: List[Section] = []
-            json_sections = data["sections"].get("items", [])
-            for sec in json_sections:
-                self.sections.append(Section(sec['properties']))
+
+            if 'sections' in data.keys():
+                json_sections = data["sections"].get("items", [])
+                for sec in json_sections:
+                    self.sections.append(Section(sec['properties']))

@@ -84,8 +84,7 @@ class TestKnowledgeGraph:
     def test_creates_csv_file_in_correct_folder(self):
         # Arrange
         sentences = []
-        dictionary = {}
-        content = Content(dictionary)
+        content = Content()
         kg_info = KnowledgeGraphInfo(sentences, content)
 
         # Act
@@ -101,8 +100,7 @@ class TestKnowledgeGraph:
                      Token('likes', dep=Dependency.root),
                      Token('computerspil', dep=Dependency.obj)]]
 
-        dictionary = {}
-        content = Content(dictionary)
+        content = Content()
 
         kg_info = KnowledgeGraphInfo(sentence, content)
 
@@ -133,8 +131,7 @@ class TestKnowledgeGraph:
                       Token('hates', dep=Dependency.root),
                       Token('computerspil', dep=Dependency.obj)]]
 
-        dictionary = {}
-        content = Content(dictionary)
+        content = Content()
 
         kg_info = KnowledgeGraphInfo(sentences, content)
 

@@ -49,7 +49,7 @@ class KnowledgeGraph:
         triples = []
         triples.extend(self.__create_relations_for_manual(content))
 
-        if hasattr(content, "sections"):
+        if content.sections:
             triples.extend(self.__create_relations_for_sections(content))
 
         return triples
@@ -57,14 +57,14 @@ class KnowledgeGraph:
     def __create_relations_for_manual(self, content: Content):
         triples = []
 
-        if hasattr(content, "publisher"):
+        if content.publisher:
             triples.append(Triple("manual", "publishedBy", content.publisher))
-        if hasattr(content, "publishedAt"):
+        if content.publishedAt:
             triples.append(Triple("manual", "publishedAt", content.publishedAt))
-        if hasattr(content, "title"):
+        if content.title:
             triples.append(Triple("manual", "describes", content.title))
 
-        if hasattr(content, "sections"):
+        if content.sections:
             for sec in content.sections:
                 triples.append(Triple("manual", "contains", sec.header))
 
@@ -73,7 +73,7 @@ class KnowledgeGraph:
     def __create_relations_for_sections(self, content):
         triples = []
         for sec in content.sections:
-            if hasattr(sec, "header") and hasattr(sec, "page"):
+            if sec.header and sec.page:
                 triples.append(Triple(sec.header, "isAt", sec.page))
 
         return triples
