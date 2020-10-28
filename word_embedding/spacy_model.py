@@ -5,8 +5,9 @@ from nltk.tokenize import word_tokenize
 
 from tokencontainer import GrammarCategories
 
+
 class SpacyModel:
-    def load(self, sentence:str):
+    def load(self, sentence: str):
         self.words = sentence
         self.spacytokens = self.model(sentence)
 
@@ -18,7 +19,7 @@ class SpacyModel:
     keyvector = ""
 
     def tokens(self):
-        #list_of_strings = self.words.split(" ")
+        # list_of_strings = self.words.split(" ")
         list_of_tokens = []
         for spacytoken in self.spacytokens:
             name = spacytoken.text
@@ -32,8 +33,15 @@ class SpacyModel:
     def get_dependency_from_spacytoken(self, spacytoken):
         converter = {
             "nsubj": Dependency.nsubj,
-            "pobj": Dependency.pobj
-            }
+            "pobj": Dependency.pobj,
+            "aux" : Dependency.aux,
+            "ROOT" : Dependency.root,
+            "prep" : Dependency.prep,
+            "pcomp" : Dependency.pcomp,
+            "compound" : Dependency.compound,
+            "dobj" : Dependency.dobj,
+            "quantmod" : Dependency.quantmod,
+        }
         spacy_dependency = spacytoken.dep_
         print(spacy_dependency)
         if spacy_dependency not in converter.keys():
@@ -104,12 +112,13 @@ class Dependency(Enum):
     xcomp = auto()
     other = auto()
 
+
 class Token:
     pos_tag: GrammarCategories
     dep: Dependency
     name = ""
 
-    def __init__(self, name,pos_tag=None, dep=None):
+    def __init__(self, name, pos_tag=None, dep=None):
         self.name = name
         self.pos_tag = pos_tag
         self.dep = dep
@@ -119,4 +128,3 @@ class Token:
 
     def __repr__(self):
         return f"Token: name:{self.name}"
-
