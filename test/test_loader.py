@@ -28,7 +28,6 @@ class TestLoader:
         with pytest.raises(FileNotFoundError):
             load_json_file(invalid_path)
 
-
     def test_load_json_file_throws_exception_if_json_file_is_empty(self):
         # Arrange
         empty_file_path = "../TestData/empty_test_file.json"

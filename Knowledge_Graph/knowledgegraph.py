@@ -1,120 +1,128 @@
 import pandas as pd
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import os
+
+from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
 from Resources.TripleContainer import Triple
 from Resources.JsonWrapper import Content
 
 
 class KnowledgeGraph:
     column_names = ['subject', 'relation', 'object']
-
-    df = pd.DataFrame(columns=column_names)
+    dataframe = pd.DataFrame(columns=column_names)
 
     database_path = ''
 
     def __init__(self, _database_path):
         self.database_path = _database_path
 
-    def update(self, sentences):
-        for sentence in sentences:
-            self.__process_triple(self.__process_sentence(sentence))
-
-        self.__save_to_file()
-
-    def show_graph(self):
-        G = nx.from_pandas_edgelist(self.df, 'subject', 'object', edge_attr=True, create_using=nx.MultiDiGraph())
-        plt.figure(figsize=(12, 12))
-
-        pos = nx.spring_layout(G)
-        nx.draw(G, pos, edge_color='black',
-                node_color='skyblue', alpha=0.9, with_labels=True)
-        nx.draw_networkx_edge_labels(G, pos=pos)
-        plt.show()
-
-    def create_relations(self, content: Content):
+    def generate_triples(self, kg_info: KnowledgeGraphInfo):
         triples = []
-        triples.extend(self.__create_relations_for_manual(content))
-        triples.extend(self.__create_relations_for_sections(content))
+
+        triples.extend(self.__process_metadata(kg_info.content))
+        triples.extend(self.__analyse_sentences(kg_info.sentences))
 
         self.__create_branches(triples)
 
         self.__save_to_file()
 
+    def __analyse_sentences(self, sentences):
+        triples = []
+
+        for sentence in sentences:
+            triples.append(self.__process_sentence(sentence))
+
+        return triples
+
+    def show_graph(self):
+        graph = nx.from_pandas_edgelist(self.dataframe, 'subject', 'object', edge_attr=True, create_using=nx.MultiDiGraph())
+        plt.figure(figsize=(12, 12))
+
+        pos = nx.spring_layout(graph)
+        nx.draw(graph, pos, edge_color='black',
+                node_color='skyblue', alpha=0.9, with_labels=True)
+        nx.draw_networkx_edge_labels(graph, pos=pos)
+        plt.show()
+
+    def __process_metadata(self, content: Content):
+        triples = []
+        triples.extend(self.__create_relations_for_manual(content))
+
+        if hasattr(content, "sections"):
+            triples.extend(self.__create_relations_for_sections(content))
+
+        return triples
+
     def __create_relations_for_manual(self, content: Content):
         triples = []
-        triples.append(Triple("manual", "publishedBy", content.publisher))
-        triples.append(Triple("manual", "publishedAt", content.publishedAt))
-        triples.append(Triple("manual", "describes", content.title))
 
-        for sec in content.sections:
-            triples.append(Triple("manual", "contains", sec.header))
+        if hasattr(content, "publisher"):
+            triples.append(Triple("manual", "publishedBy", content.publisher))
+        if hasattr(content, "publishedAt"):
+            triples.append(Triple("manual", "publishedAt", content.publishedAt))
+        if hasattr(content, "title"):
+            triples.append(Triple("manual", "describes", content.title))
+
+        if hasattr(content, "sections"):
+            for sec in content.sections:
+                triples.append(Triple("manual", "contains", sec.header))
 
         return triples
 
     def __create_relations_for_sections(self, content):
         triples = []
         for sec in content.sections:
-            triples.append(Triple(sec.header, "isAt", sec.page))
+            if hasattr(sec, "header") and hasattr(sec, "page"):
+                triples.append(Triple(sec.header, "isAt", sec.page))
 
         return triples
-
 
     def __process_sentence(self, sentence):
         subj = ''
         obj = ''
         relation = ''
+
         for token in sentence:
-            if 'subj' in token.dep_:
+            if 'subj' in token.dep_ and self.__is_empty(subj):
                 subj = token.text
-            elif 'obj' in token.dep_:
+            elif 'obj' in token.dep_ and self.__is_empty(obj):
                 obj = token.text
             elif self.__is_relation_candidate(token):
-                if not relation:
-                    relation += token.text
-                else:
-                    relation += ' ' + token.text
+                relation = token.text
             else:
                 continue
 
         return Triple(subj.strip(), relation.strip(), obj.strip())
 
-    def __is_relation_candidate(self, token):
-        deps = ["ROOT", "adj", "attr", "agent", "amod", "xcomp", "prep"]
-        return any(subs in token.dep_ for subs in deps)
-
-    def __process_triple(self, triple: Triple):
-        if self.__relation_and_object_exists(triple):
-            pass
+    @staticmethod
+    def __is_empty(text_field):
+        if not text_field:
+            return True
         else:
-            self.__create_branch(triple)
+            return False
 
-    def __relation_and_object_exists(self, triple):
-        pass
+    @staticmethod
+    def __is_relation_candidate(token):
+        dep = ["ROOT"]
+
+        return any(subs in token.dep_ for subs in dep)
 
     def __create_branches(self, triples):
         for triple in triples:
-            self.df = self.df.append(pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
-
-    def __create_branch(self, triple):
-        self.df = self.df.append(pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
-
-    def __update_branch(self, triple):
-        pass
-
-    def __create_node(self, triple):
-        pass
+            self.dataframe = self.dataframe.append(
+                pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
 
     def __save_to_file(self):
         if not os.path.exists(self.database_path):
-            self.df.to_csv(self.database_path, mode='a', index=False)
+            self.dataframe.to_csv(self.database_path, mode='a', index=False)
         elif os.stat(self.database_path).st_size == 0:
-            self.df.to_csv(self.database_path, mode='a', index=False)
+            self.dataframe.to_csv(self.database_path, mode='a', index=False)
         else:
-            self.df.to_csv(self.database_path, mode='a', index=False, header=None)
+            self.dataframe.to_csv(self.database_path, mode='a', index=False, header=None)
 
-    def __print_triple(self, triple):
+    @staticmethod
+    def __print_triple(triple):
         return triple.subj + ' --> ' + triple.rel + ' --> ' + triple.obj + '\n'
 
 
