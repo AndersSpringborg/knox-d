@@ -9,20 +9,12 @@ on:
       - master
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Test with pytest
-        run: |
-          if [ -f tests/requirements.txt ]; then pip install -r requirements.txt; fi
-          pytest
+  tests:
+    - name: Python Pylin GitHub Action
+    uses: fylein/python-pytest-github-action@v1
+    with:
+      args: pip3 install -r requirements.txt && pip3 install -r tests/requirements.txt && pytest test/unit
+  
   
   lint:
 
