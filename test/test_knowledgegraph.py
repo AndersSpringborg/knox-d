@@ -5,8 +5,9 @@ import pandas as pd
 import os.path
 from pandas._testing import assert_frame_equal
 from Resources.JsonWrapper import Content
-from Resources.TokenContainer import Token
+from word_embedding.token import Token
 from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
+from word_embedding.dependency import Dependency
 
 from Knowledge_Graph.knowledgegraph import KnowledgeGraph, Triple
 
@@ -59,18 +60,18 @@ class TestKnowledgeGraph:
                 ]
             }
         }
-        sentences = [[Token('Martin', 'subj'),
-                     Token('likes', 'ROOT'),
-                     Token('computerspil', 'obj')],
-                    [Token('Kasper', 'subj'),
-                     Token('loves', 'ROOT'),
-                     Token('computerspil', 'obj')],
-                    [Token('Martin', 'subj'),
-                     Token('enjoys', 'ROOT'),
-                     Token('apples', 'obj')],
-                    [Token('Lars', 'subj'),
-                     Token('hates', 'ROOT'),
-                     Token('computerspil', 'obj')]]
+        sentences = [[Token('Martin',  dep=Dependency.nsubj),
+                     Token('likes', dep=Dependency.root),
+                     Token('computerspil', dep=Dependency.obj)],
+                    [Token('Kasper',  dep=Dependency.nsubj),
+                     Token('loves', dep=Dependency.root),
+                     Token('computerspil', dep=Dependency.obj)],
+                    [Token('Martin',  dep=Dependency.nsubj),
+                     Token('enjoys', dep=Dependency.root),
+                     Token('apples', dep=Dependency.obj)],
+                    [Token('Lars',  dep=Dependency.nsubj),
+                     Token('hates', dep=Dependency.root),
+                     Token('computerspil', dep=Dependency.obj)]]
 
         self.kg_info = KnowledgeGraphInfo(sentences, dictionary)
 
@@ -96,9 +97,9 @@ class TestKnowledgeGraph:
 
     def test_validate_analyse_single_sentence(self):
         # Arrange
-        sentence = [[Token('martin', 'subj'),
-                     Token('likes', 'ROOT'),
-                     Token('computerspil', 'obj')]]
+        sentence = [[Token('martin', dep=Dependency.nsubj),
+                     Token('likes', dep=Dependency.root),
+                     Token('computerspil', dep=Dependency.obj)]]
 
         dictionary = {}
         content = Content(dictionary)
@@ -119,28 +120,28 @@ class TestKnowledgeGraph:
     def test_validate_analyse_multiple_sentences(self):
 
         # Arrange
-        sentence = [[Token('martin', 'subj'),
-                     Token('likes', 'ROOT'),
-                     Token('computerspil', 'obj')],
-                    [Token('kasper', 'subj'),
-                     Token('loves', 'ROOT'),
-                     Token('computerspil', 'obj')],
-                    [Token('martin', 'subj'),
-                     Token('enjoys', 'ROOT'),
-                     Token('apples', 'obj')],
-                    [Token('lars', 'subj'),
-                     Token('hates', 'ROOT'),
-                     Token('computerspil', 'obj')]]
+        sentences = [[Token('Martin', dep=Dependency.nsubj),
+                      Token('likes', dep=Dependency.root),
+                      Token('computerspil', dep=Dependency.obj)],
+                     [Token('Kasper', dep=Dependency.nsubj),
+                      Token('loves', dep=Dependency.root),
+                      Token('computerspil', dep=Dependency.obj)],
+                     [Token('Martin', dep=Dependency.nsubj),
+                      Token('enjoys', dep=Dependency.root),
+                      Token('apples', dep=Dependency.obj)],
+                     [Token('Lars', dep=Dependency.nsubj),
+                      Token('hates', dep=Dependency.root),
+                      Token('computerspil', dep=Dependency.obj)]]
 
         dictionary = {}
         content = Content(dictionary)
 
-        kg_info = KnowledgeGraphInfo(sentence, content)
+        kg_info = KnowledgeGraphInfo(sentences, content)
 
-        triple1 = Triple('martin', 'likes', 'computerspil')
-        triple2 = Triple('kasper', 'loves', 'computerspil')
-        triple3 = Triple('martin', 'enjoys', 'apples')
-        triple4 = Triple('lars', 'hates', 'computerspil')
+        triple1 = Triple('Martin', 'likes', 'computerspil')
+        triple2 = Triple('Kasper', 'loves', 'computerspil')
+        triple3 = Triple('Martin', 'enjoys', 'apples')
+        triple4 = Triple('Lars', 'hates', 'computerspil')
 
         expected = pd.DataFrame(columns=['subject', 'relation', 'object'])
 

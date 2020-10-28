@@ -2,10 +2,10 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 import os
-
 from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
 from Resources.TripleContainer import Triple
 from Resources.JsonWrapper import Content
+from word_embedding.dependency import Dependency
 
 
 class KnowledgeGraph:
@@ -84,16 +84,31 @@ class KnowledgeGraph:
         relation = ''
 
         for token in sentence:
-            if 'subj' in token.dep_ and self.__is_empty(subj):
-                subj = token.text
-            elif 'obj' in token.dep_ and self.__is_empty(obj):
-                obj = token.text
+            if self.__is_subject(token) and self.__is_empty(subj):
+                subj = token.name
+            elif self.__is_object(token) and self.__is_empty(obj):
+                obj = token.name
             elif self.__is_relation_candidate(token):
-                relation = token.text
+                relation = token.name
             else:
                 continue
 
         return Triple(subj.strip(), relation.strip(), obj.strip())
+
+    @staticmethod
+    def __is_subject(token):
+        if token.dep == Dependency.nsubj or token.dep == Dependency.csubj or \
+                token.dep == Dependency.csubjpass or token.dep == Dependency.nsubjpass:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def __is_object(token):
+        if token.dep == Dependency.obj or token.dep == Dependency.dobj or token.dep == Dependency.pobj:
+            return True
+        else:
+            return False
 
     @staticmethod
     def __is_empty(text_field):
@@ -104,9 +119,11 @@ class KnowledgeGraph:
 
     @staticmethod
     def __is_relation_candidate(token):
-        dep = ["ROOT"]
+        if token.dep == Dependency.root:
+            return True
 
-        return any(subs in token.dep_ for subs in dep)
+        else:
+            return False
 
     def __create_branches(self, triples):
         for triple in triples:
