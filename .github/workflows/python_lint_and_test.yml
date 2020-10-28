@@ -9,13 +9,6 @@ on:
       - master
 
 jobs:
-  tests:
-    - name: Python Pylin GitHub Action
-    uses: fylein/python-pytest-github-action@v1
-    with:
-      args: pip3 install -r requirements.txt && pip3 install -r tests/requirements.txt && python3 -m spacy download en_core_web_sm && pytest test/unit
-  
-  
   lint:
 
     runs-on: ubuntu-latest
@@ -28,8 +21,6 @@ jobs:
         python-version: 3.8
     - name: Install Requirements
       run: |
-        python -m pip install --upgrade pip
-        pip install pylint-runner
+        python -m pip install --upgrade pip && pip install pylint-runner
     - name: Run Pylint
-      run: |
-        pylint_runner
+      run: pylint_runner
