@@ -1,8 +1,5 @@
 from typing import List
 
-# For additional information on the usage of dict:
-# https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
-
 
 class Paragraph:
     page: str = ''
