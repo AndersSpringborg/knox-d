@@ -43,24 +43,27 @@ class KnowledgeGraph:
         nx.draw(graph, pos, edge_color='black',
                 node_color='skyblue', alpha=0.9, with_labels=True)
         nx.draw_networkx_edge_labels(graph, pos=pos)
+
         plt.show()
 
     def __process_metadata(self, content: Content):
         triples = []
-        triples.extend(self.__create_relations_for_manual(content))
 
-        if content.sections:
-            triples.extend(self.__create_relations_for_sections(content))
+        triples.extend(self.__create_relations_for_manual(content))
+        triples.extend(self.__create_relations_for_sections(content))
 
         return triples
 
-    def __create_relations_for_manual(self, content: Content):
+    @staticmethod
+    def __create_relations_for_manual(content: Content):
         triples = []
 
         if content.publisher:
             triples.append(Triple("manual", "publishedBy", content.publisher))
+
         if content.publishedAt:
             triples.append(Triple("manual", "publishedAt", content.publishedAt))
+
         if content.title:
             triples.append(Triple("manual", "describes", content.title))
 
@@ -70,11 +73,14 @@ class KnowledgeGraph:
 
         return triples
 
-    def __create_relations_for_sections(self, content):
+    @staticmethod
+    def __create_relations_for_sections(content: Content):
         triples = []
-        for sec in content.sections:
-            if sec.header and sec.page:
-                triples.append(Triple(sec.header, "isAt", sec.page))
+
+        if content.sections:
+            for sec in content.sections:
+                if sec.header and sec.page:
+                    triples.append(Triple(sec.header, "isAt", sec.page))
 
         return triples
 
@@ -121,7 +127,6 @@ class KnowledgeGraph:
     def __is_relation_candidate(token):
         if token.dep == Dependency.root:
             return True
-
         else:
             return False
 
@@ -130,6 +135,7 @@ class KnowledgeGraph:
             self.dataframe = self.dataframe.append(
                 pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
 
+    # TODO: Can be removed when RDF turtle is implemented.
     def __save_to_file(self):
         if not os.path.exists(self.database_path):
             self.dataframe.to_csv(self.database_path, mode='a', index=False)
@@ -137,11 +143,3 @@ class KnowledgeGraph:
             self.dataframe.to_csv(self.database_path, mode='a', index=False)
         else:
             self.dataframe.to_csv(self.database_path, mode='a', index=False, header=None)
-
-    @staticmethod
-    def __print_triple(triple):
-        return triple.subj + ' --> ' + triple.rel + ' --> ' + triple.obj + '\n'
-
-
-
-

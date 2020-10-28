@@ -1,5 +1,3 @@
-from typing import List
-
 import pytest
 import pandas as pd
 import os.path
@@ -17,64 +15,6 @@ class TestKnowledgeGraph:
     database_filepath = 'knowledgegraphtestfile.csv'
 
     def setup_method(self):
-        dictionary = {
-            "publisher": "Grundfos",
-            "publishedAt": "23/7",
-            "title": "ALPHA1",
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "page": "3",
-                            "header": "General Information",
-                            "paragraphs": {
-                                "items": [
-                                    {
-                                        "properties": {
-                                            "page": "3",
-                                            "text": "The pump is used for Solar panels"
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-
-                    },
-                    {
-                        "properties": {
-                            "page": "8",
-                            "header": "Starting up the product",
-                            "paragraphs": {
-                                "items": [
-                                    {
-                                        "properties": {
-                                            "page": "8",
-                                            "text": "The pump must be turned on"
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-
-                    }
-                ]
-            }
-        }
-        sentences = [[Token('Martin',  dep=Dependency.nsubj),
-                     Token('likes', dep=Dependency.root),
-                     Token('computerspil', dep=Dependency.obj)],
-                    [Token('Kasper',  dep=Dependency.nsubj),
-                     Token('loves', dep=Dependency.root),
-                     Token('computerspil', dep=Dependency.obj)],
-                    [Token('Martin',  dep=Dependency.nsubj),
-                     Token('enjoys', dep=Dependency.root),
-                     Token('apples', dep=Dependency.obj)],
-                    [Token('Lars',  dep=Dependency.nsubj),
-                     Token('hates', dep=Dependency.root),
-                     Token('computerspil', dep=Dependency.obj)]]
-
-        self.kg_info = KnowledgeGraphInfo(sentences, dictionary)
-
         self.kg = KnowledgeGraph(self.database_filepath)
 
     def teardown_method(self):
@@ -378,6 +318,28 @@ class TestKnowledgeGraph:
         sentences = []
         kg_info = KnowledgeGraphInfo(sentences, content)
 
+        self.kg.generate_triples(kg_info)
+        result = pd.read_csv(self.database_filepath)
+
+        assert_frame_equal(result, expected)
+
+    def test_generate_triples_if_only_title_and_publisher(self):
+        triple = Triple('manual', 'publishedBy', 'Grundfos')
+        triple2 = Triple('manual', 'describes', "ALPHA1")
+
+        expected = pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]})
+        expected = expected.append(
+            pd.DataFrame({'subject': [triple2.subj], 'relation': [triple2.rel], 'object': [triple2.obj]}),
+            ignore_index=True)
+
+        dict = {
+            "publisher": "Grundfos",
+            "title": "ALPHA1"
+        }
+
+        content = Content(dict)
+        sentences = []
+        kg_info = KnowledgeGraphInfo(sentences, content)
         self.kg.generate_triples(kg_info)
         result = pd.read_csv(self.database_filepath)
 
