@@ -1,5 +1,4 @@
 import pytest
-import spacy
 from tokencontainer import GrammarCategories
 from word_embedding.spacy_model import SpacyModel, Token, Dependency
 

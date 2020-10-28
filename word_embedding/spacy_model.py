@@ -1,8 +1,5 @@
 from enum import Enum, auto
-import nltk
 import spacy
-from nltk.tokenize import word_tokenize
-
 from tokencontainer import GrammarCategories
 
 
@@ -19,38 +16,22 @@ class SpacyModel:
     keyvector = ""
 
     def tokens(self):
-        # list_of_strings = self.words.split(" ")
         list_of_tokens = []
-        for spacytoken in self.spacytokens:
-            name = spacytoken.text
-            pos_tag = self.get_pos_tag_from_spacytoken(spacytoken)
-            dependency = self.get_dependency_from_spacytoken(spacytoken)
+        for spacy_token in self.spacytokens:
+            name = spacy_token.text
+            pos_tag = self.get_pos_tag_from_spacytoken(spacy_token)
+            dependency = self.get_dependency_from_spacytoken(spacy_token)
 
             new_token = Token(name, pos_tag, dependency)
             list_of_tokens.append(new_token)
         return list_of_tokens
 
-    def get_dependency_from_spacytoken(self, spacytoken):
-        converter = {
-            "nsubj": Dependency.nsubj,
-            "pobj": Dependency.pobj,
-            "aux" : Dependency.aux,
-            "ROOT" : Dependency.root,
-            "prep" : Dependency.prep,
-            "pcomp" : Dependency.pcomp,
-            "compound" : Dependency.compound,
-            "dobj" : Dependency.dobj,
-            "quantmod" : Dependency.quantmod,
-        }
-        spacy_dependency = spacytoken.dep_
-        print(spacy_dependency)
-        if spacy_dependency not in converter.keys():
-            return Dependency.other
-        else:
-            return converter[spacy_dependency]
+    def get_dependency_from_spacytoken(self, spacy_token):
+        spacy_dependency = spacy_token.dep_
+        return Converter.dependency(spacy_dependency)
 
-    def get_pos_tag_from_spacytoken(self, spacytoken):
-        space_pos_tag = spacytoken.tag_
+    def get_pos_tag_from_spacytoken(self, spacy_token):
+        space_pos_tag = spacy_token.tag_
         converter = {
             "NN": GrammarCategories.noun,
             "JJ": GrammarCategories.adj,
@@ -128,3 +109,24 @@ class Token:
 
     def __repr__(self):
         return f"Token: name:{self.name}"
+
+
+class Converter():
+    @staticmethod
+    def dependency(dep: str) -> Dependency:
+        converter = {
+            "nsubj": Dependency.nsubj,
+            "pobj": Dependency.pobj,
+            "aux": Dependency.aux,
+            "ROOT": Dependency.root,
+            "prep": Dependency.prep,
+            "pcomp": Dependency.pcomp,
+            "compound": Dependency.compound,
+            "dobj": Dependency.dobj,
+            "quantmod": Dependency.quantmod,
+        }
+
+        if dep not in converter.keys():
+            return Dependency.other
+        else:
+            return converter[dep]
