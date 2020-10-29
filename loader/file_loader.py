@@ -14,5 +14,4 @@ def load_json_file(path: str) -> Content:
 
         return Content(data['properties']['content']['properties'])
 
-    else:
-        raise IOError
+    raise IOError
