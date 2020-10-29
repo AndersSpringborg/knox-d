@@ -2,9 +2,9 @@ import os
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
-from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
-from Resources.TripleContainer import Triple
-from Resources.JsonWrapper import Content
+from resources.knowledgegraph_info_container import KnowledgeGraphInfo
+from resources.triple_container import Triple
+from resources.json_wrapper import Content
 from word_embedding.dependency import Dependency
 
 

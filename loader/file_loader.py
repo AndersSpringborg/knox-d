@@ -1,6 +1,6 @@
 import os
 import json
-from Resources.JsonWrapper import Content
+from resources.json_wrapper import Content
 
 
 def load_json_file(path: str) -> Content:

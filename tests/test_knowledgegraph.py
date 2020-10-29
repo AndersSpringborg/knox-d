@@ -2,9 +2,9 @@ import pytest
 import pandas as pd
 import os.path
 from pandas._testing import assert_frame_equal
-from Resources.JsonWrapper import Content
+from resources.json_wrapper import Content
 from word_embedding.token import Token
-from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
+from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from word_embedding.dependency import Dependency
 
 from knowledge_graph.knowledgegraph import KnowledgeGraph, Triple

@@ -1,5 +1,5 @@
 from typing import List
-from Resources.JsonWrapper import Content
+from resources.json_wrapper import Content
 
 
 class KnowledgeGraphInfo:
