@@ -140,7 +140,6 @@ class KnowledgeGraph:
                 pd.DataFrame(
                     {'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
 
-    # TODO: Can be removed when RDF turtle is implemented.
     def __save_to_file(self):
         if not os.path.exists(self.database_path):
             self.dataframe.to_csv(self.database_path, mode='a', index=False)
