@@ -8,7 +8,7 @@ class TestLoader:
 
     def setup_method(self):
 
-        self.json_file_path = Path('../test_data/manual_test_file.json')
+        self.json_file_path = Path('../test_data/manual_test_file.json').resolve()
 
     def test_json_load_returns_dict(self):
         # Arrange
