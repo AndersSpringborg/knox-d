@@ -3,6 +3,9 @@ from resources.json_wrapper import Content
 
 
 class KnowledgeGraphInfo:
+    """
+    Data-structure for the information needed to construct a knowledge graph object
+    """
     sentences: List[list]
     content: Content
 

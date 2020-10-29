@@ -1,4 +1,7 @@
 class Triple:
+    """
+    Data-structure for the relation data (subject, object, relation), used with the knowledge graph
+    """
     subj = ''
     obj = ''
     rel = ''
