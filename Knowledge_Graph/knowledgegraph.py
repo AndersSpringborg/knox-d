@@ -103,32 +103,20 @@ class KnowledgeGraph:
 
     @staticmethod
     def __is_subject(token):
-        if token.dep == Dependency.nsubj or token.dep == Dependency.csubj or \
-                token.dep == Dependency.csubjpass or token.dep == Dependency.nsubjpass:
-            return True
-        else:
-            return False
+        return (token.dep == Dependency.nsubj or token.dep == Dependency.csubj or \
+                token.dep == Dependency.csubjpass or token.dep == Dependency.nsubjpass)
 
     @staticmethod
     def __is_object(token):
-        if token.dep == Dependency.obj or token.dep == Dependency.dobj or token.dep == Dependency.pobj:
-            return True
-        else:
-            return False
+        return (token.dep == Dependency.obj or token.dep == Dependency.dobj or token.dep == Dependency.pobj)
 
     @staticmethod
     def __is_empty(text_field):
-        if not text_field:
-            return True
-        else:
-            return False
+        return not text_field
 
     @staticmethod
     def __is_relation_candidate(token):
-        if token.dep == Dependency.root:
-            return True
-        else:
-            return False
+        return token.dep == Dependency.root
 
     def __create_branches(self, triples):
         for triple in triples:

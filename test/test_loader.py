@@ -6,7 +6,7 @@ import json
 class TestLoader:
 
     def setup_method(self):
-        self.json_file_path = '../TestData/manual_test_file.json'
+        self.json_file_path = 'TestData/manual_test_file.json'
 
     def test_json_load_returns_dict(self):
         # Arrange
@@ -71,7 +71,6 @@ class TestLoader:
 
     def test_can_extract_sections_to_content(self):
         # Arrange
-        expected = {'type': 'string'}
 
         # Act
         result = load_json_file(self.json_file_path)
