@@ -1,0 +1,18 @@
+[MASTER]
+disable=
+    C0114,  #missing-module-docstring
+            #because we not module boys
+            #pythonic#not
+
+    C0116,  #missing-function-docstring
+            #dont like clutter, mby re-introduce later if u like pp
+
+    R0201,  #Method could be a function (no-self-use)
+            #to remove overcomplications
+
+    R0903,  #Too few public methods (1/2) (too-few-public-methods)
+            #pls dont tell me how to be pro coder thank
+
+ignore=tests
+
+
