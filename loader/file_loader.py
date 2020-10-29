@@ -3,7 +3,7 @@ import json
 from resources.json_wrapper import Content
 
 
-def load_json_file(path: str) -> Content:
+def load_json_file_into_content_object(path: str) -> Content:
     """
     Loads a json file into a Content object.
     """

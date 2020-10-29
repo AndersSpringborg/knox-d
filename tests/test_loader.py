@@ -1,5 +1,5 @@
 import pytest
-from loader.file_loader import load_json_file
+from loader.file_loader import load_json_file_into_content_object
 import json
 from pathlib import Path
 
@@ -28,7 +28,7 @@ class TestLoader:
 
         # Assert
         with pytest.raises(FileNotFoundError):
-            load_json_file(invalid_path)
+            load_json_file_into_content_object(invalid_path)
 
     def test_load_json_file_throws_exception_if_json_file_is_empty(self):
         # Arrange
@@ -38,14 +38,14 @@ class TestLoader:
 
         # Assert
         with pytest.raises(IOError):
-            load_json_file(empty_file_path)
+            load_json_file_into_content_object(empty_file_path)
 
     def test_assign_correct_publisher_to_content(self):
         # Arrange
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert result.publisher == expected
@@ -55,7 +55,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert result.published_at == expected
@@ -65,7 +65,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
         print(result.publisher)
 
         # Assert
@@ -75,7 +75,7 @@ class TestLoader:
         # Arrange
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert result.sections is not None
@@ -85,7 +85,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert (result.sections[0].page == expected)
@@ -95,7 +95,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert (result.sections[0].header == expected)
@@ -105,7 +105,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert (result.sections[0].paragraphs[0].page == expected)
@@ -115,7 +115,7 @@ class TestLoader:
         expected = {'type': 'string'}
 
         # Act
-        result = load_json_file(self.json_file_path)
+        result = load_json_file_into_content_object(self.json_file_path)
 
         # Assert
         assert (result.sections[0].paragraphs[0].text == expected)
