@@ -58,7 +58,7 @@ class TestLoader:
         result = load_json_file(self.json_file_path)
 
         # Assert
-        assert result.publishedAt == expected
+        assert result.published_at == expected
 
     def test_assign_correct_title_to_content(self):
         # Arrange

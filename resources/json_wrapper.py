@@ -30,7 +30,7 @@ class Section:
 
 class Content:
     publisher: str = ''
-    publishedAt: str = ''
+    published_at: str = ''
     title: str = ''
     sections: List[Section] = []
 
@@ -39,7 +39,7 @@ class Content:
         if data:
             self.publisher = data.get("publisher", "")
 
-            self.publishedAt = data.get("publishedAt", "")
+            self.published_at = data.get("publishedAt", "")
 
             self.title = data.get("title", "")
 

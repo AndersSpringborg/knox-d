@@ -76,8 +76,8 @@ class KnowledgeGraph:
         if content.publisher:
             triples.append(Triple("manual", "publishedBy", content.publisher))
 
-        if content.publishedAt:
-            triples.append(Triple("manual", "publishedAt", content.publishedAt))
+        if content.published_at:
+            triples.append(Triple("manual", "publishedAt", content.published_at))
 
         if content.title:
             triples.append(Triple("manual", "describes", content.title))
