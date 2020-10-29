@@ -1,7 +1,7 @@
+import os
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
-import os
 from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
 from Resources.TripleContainer import Triple
 from Resources.JsonWrapper import Content
@@ -9,6 +9,11 @@ from word_embedding.dependency import Dependency
 
 
 class KnowledgeGraph:
+    """
+    Generates triples from the text which has been natural language processed,
+    and the metadata extracted from a Content object.
+    Triples are saved to the database(.csv) file provided to the object during instantiation.
+    """
     column_names = ['subject', 'relation', 'object']
     dataframe = pd.DataFrame(columns=column_names)
 
@@ -18,6 +23,10 @@ class KnowledgeGraph:
         self.database_path = _database_path
 
     def generate_triples(self, kg_info: KnowledgeGraphInfo):
+        """
+        Generates triples (subj, rel, obj) from the text which has been natural language processed
+        and the metadata extracted from a Content object
+        """
         triples = []
 
         triples.extend(self.__process_metadata(kg_info.content))
@@ -27,16 +36,14 @@ class KnowledgeGraph:
 
         self.__save_to_file()
 
-    def __analyse_sentences(self, sentences):
-        triples = []
-
-        for sentence in sentences:
-            triples.append(self.__process_sentence(sentence))
-
-        return triples
 
     def show_graph(self):
-        graph = nx.from_pandas_edgelist(self.dataframe, 'subject', 'object', edge_attr=True, create_using=nx.MultiDiGraph())
+        """
+        Opens a new window with the graph plotted within
+        """
+        graph = nx.from_pandas_edgelist(
+            self.dataframe, 'subject', 'object', edge_attr=True, create_using=nx.MultiDiGraph())
+
         plt.figure(figsize=(12, 12))
 
         pos = nx.spring_layout(graph)
@@ -45,6 +52,14 @@ class KnowledgeGraph:
         nx.draw_networkx_edge_labels(graph, pos=pos)
 
         plt.show()
+
+    def __analyse_sentences(self, sentences):
+        triples = []
+
+        for sentence in sentences:
+            triples.append(self.__process_sentence(sentence))
+
+        return triples
 
     def __process_metadata(self, content: Content):
         triples = []
@@ -103,12 +118,13 @@ class KnowledgeGraph:
 
     @staticmethod
     def __is_subject(token):
-        return (token.dep == Dependency.nsubj or token.dep == Dependency.csubj or \
-                token.dep == Dependency.csubjpass or token.dep == Dependency.nsubjpass)
+        return token.dep == Dependency.nsubj or token.dep == Dependency.csubj or \
+                token.dep == Dependency.csubjpass or token.dep == Dependency.nsubjpass
 
     @staticmethod
     def __is_object(token):
-        return (token.dep == Dependency.obj or token.dep == Dependency.dobj or token.dep == Dependency.pobj)
+        return token.dep == Dependency.obj or token.dep == Dependency.dobj or \
+                token.dep == Dependency.pobj
 
     @staticmethod
     def __is_empty(text_field):
@@ -121,7 +137,8 @@ class KnowledgeGraph:
     def __create_branches(self, triples):
         for triple in triples:
             self.dataframe = self.dataframe.append(
-                pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
+                pd.DataFrame(
+                    {'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}))
 
     # TODO: Can be removed when RDF turtle is implemented.
     def __save_to_file(self):

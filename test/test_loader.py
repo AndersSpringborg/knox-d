@@ -1,5 +1,5 @@
 import pytest
-from Loader.FileLoader import load_json_file
+from loader.file_loader import load_json_file
 import json
 
 

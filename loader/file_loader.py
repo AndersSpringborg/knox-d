@@ -3,9 +3,10 @@ import json
 from Resources.JsonWrapper import Content
 
 
-
-
 def load_json_file(path: str) -> Content:
+    """
+    Loads a json file into a Content object.
+    """
     if os.stat(path).st_size > 0:
 
         with open(path, 'r', encoding='utf8') as file:

@@ -7,7 +7,7 @@ from word_embedding.token import Token
 from Resources.KnowledgeGraphInfoContainer import KnowledgeGraphInfo
 from word_embedding.dependency import Dependency
 
-from Knowledge_Graph.knowledgegraph import KnowledgeGraph, Triple
+from knowledge_graph.knowledgegraph import KnowledgeGraph, Triple
 
 
 class TestKnowledgeGraph:
