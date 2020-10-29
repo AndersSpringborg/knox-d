@@ -2,6 +2,9 @@ from typing import List
 
 
 class Paragraph:
+    """
+    Data-structure for the information stored under each paragraph in the "paragraph" array in the json file
+    """
     page: str = ''
     text: str = ''
 
@@ -12,6 +15,9 @@ class Paragraph:
 
 
 class Section:
+    """
+    Data-structure for the information stored under each section in the "sections" array in the json file
+    """
     page: str = ''
     header: str = ''
     paragraphs: List[Paragraph] = []
@@ -29,6 +35,9 @@ class Section:
 
 
 class Content:
+    """
+    Data-structure for the information stored under "content" in the json file
+    """
     publisher: str = ''
     published_at: str = ''
     title: str = ''
