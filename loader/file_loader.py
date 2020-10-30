@@ -1,6 +1,8 @@
 import os
+from io import StringIO
 import json
 from resources.json_wrapper import Content
+
 
 
 def load_json_file_into_content_object(path: str) -> Content:
@@ -15,3 +17,15 @@ def load_json_file_into_content_object(path: str) -> Content:
         return Content(data['properties']['content']['properties'])
 
     raise IOError
+
+
+def load_json(io_stream):
+    if io_stream:
+        with StringIO(io_stream) as json_file:
+            data = json.load(json_file)
+        return instantiate_content_object(data)
+    raise IOError
+
+
+def instantiate_content_object(data:dict):
+    return Content(data["properties"]["content"]["properties"])
