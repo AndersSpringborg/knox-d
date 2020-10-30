@@ -9,25 +9,20 @@ on:
       - master
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@v2
-        - name: Set up Python 3.8
-        
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-            python-version: 3.8
-        
-        - name: Install Requirements
+          python-version: 3.8
+      - name: Install Requirements
         run: python -m pip install --upgrade pip && pip install -r requirements.txt && pip install -r tests/requirements.txt
-        
-        - name: Install space small web model
+      - name: Install space small web model
         run: python -m spacy download en_core_web_sm
-        
-        - name: Instal nltk
+      - name: Instal nltk
         run: python -c "import nltk; nltk.download('punkt')"
-        
-        - name: Run test
+      - name: Run test
         run: pytest
