@@ -3,6 +3,7 @@
 knox-env/
 .idea/*
 venv/
+virtual/
 [Dd]ata/
 */__pycache__
 .vscode/
