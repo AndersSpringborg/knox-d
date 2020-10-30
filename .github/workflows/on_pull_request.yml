@@ -1,3 +1,5 @@
+name: test
+
 on:
   pull_request:
     branches:
@@ -8,7 +10,6 @@ on:
 
 jobs:
   lint:
-    name: lint
 
     runs-on: ubuntu-latest
 
@@ -21,25 +22,4 @@ jobs:
     - name: Install Requirements
       run: python -m pip install --upgrade pip && pip install -r requirements.txt && pip install pylint-runner 
     - name: Run Pylint
-      run: pylint_runner
-  
-  test:
-    name: test
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
-    - name: Install Requirements
-      run: python -m pip install --upgrade pip && pip install -r requirements.txt && pip install -r tests/requirements.txt
-    - name: Install space small web model
-      run: python -m spacy download en_core_web_sm
-    - name: Instal nltk
-      run: python -c "import nltk; nltk.download('punkt')"
-    - name: Run test
-      run: pytest
-      
+      run: pylint_runner    
