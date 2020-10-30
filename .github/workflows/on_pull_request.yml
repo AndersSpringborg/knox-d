@@ -9,11 +9,6 @@ on:
       - master
 
 jobs:
-  files:
-    runs-on: ubuntu-latest
-    steps:
-      - name: ls
-        run: ls -la
   lint:
 
     runs-on: ubuntu-latest
