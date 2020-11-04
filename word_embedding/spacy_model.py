@@ -1,5 +1,5 @@
 import spacy
-from tokencontainer import GrammarCategories
+from word_embedding.grammarcategories import GrammarCategories
 from word_embedding.converter import Converter
 from word_embedding.token import Token
 

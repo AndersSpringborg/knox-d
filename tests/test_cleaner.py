@@ -10,7 +10,6 @@ class TestCleaner:
         new_bigrams = self.cleaner.bigrams(sentence)
         expected_bigrams = [('Kaare', 'is'), ('is', 'a'), ('a', 'tree')]
         assert all(bigrams in expected_bigrams for bigrams in new_bigrams)
-
     def setup_method(self):
         self.cleaner = CleanerImp()
 

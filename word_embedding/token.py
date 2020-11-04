@@ -1,4 +1,4 @@
-from tokencontainer import GrammarCategories
+from word_embedding.grammarcategories import GrammarCategories
 from word_embedding.dependency import Dependency
 
 
