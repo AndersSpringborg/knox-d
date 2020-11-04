@@ -19,6 +19,14 @@ class TestArgsParser:
 
         assert "visualise the graph" in helper_msg
 
+    def test_visual_default_is_false(self):
+        empty_args = []
+
+        parser = self.mi_parser.parse_args(empty_args)
+
+        assert parser.visualisation == False
+
+
 
 
 
