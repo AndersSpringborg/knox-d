@@ -20,14 +20,25 @@ class SpacyModel:
     keyvector = ""
 
     def tokens(self):
+        doc = list(self.spacytokens.sents)
+        sentences = []
+
+        for sentence in doc:
+            sentences.append(self.__convert_tokens(sentence))
+
+        return sentences
+
+    def __convert_tokens(self, sentence):
         list_of_tokens = []
-        for spacy_token in self.spacytokens:
+
+        for spacy_token in sentence:
             name = spacy_token.text
             pos_tag = self.get_pos_tag_from_spacytoken(spacy_token)
             dependency = self.get_dependency_from_spacytoken(spacy_token)
 
             new_token = Token(name, pos_tag, dependency)
             list_of_tokens.append(new_token)
+
         return list_of_tokens
 
     def get_dependency_from_spacytoken(self, spacy_token):

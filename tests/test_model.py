@@ -27,88 +27,128 @@ class TestModel:
         token = Token("original")
         tokens = self.model.tokens()
 
-        assert token in tokens
+        assert token in tokens[0]
 
     def test_token_has_label(self):
         self.model.load("apple")
 
-        token = self.model.tokens().pop()
+        tokens = self.model.tokens()
+        token = tokens[0].pop()
 
         assert token.pos_tag == GrammarCategories.noun
 
     def test_token_can_have_adj_label(self):
         self.model.load("good")
 
-        token = self.model.tokens().pop()
+        tokens = self.model.tokens()
+        token = tokens[0].pop()
 
         assert token.pos_tag == GrammarCategories.adj
 
     def test_token_out_of_category(self):
         self.model.load("tyggegummi")
 
-        token = self.model.tokens().pop()
+        tokens = self.model.tokens()
+        token = tokens[0].pop()
 
         assert token.pos_tag == GrammarCategories.other
 
     def test_detect_dependency_nsubj(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        apple = self.model.tokens()[0]
+        tokens = self.model.tokens()
+        apple = tokens[0][0]
 
         assert apple.dep == Dependency.nsubj
 
     def test_detect_dependency_aux(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        _is = self.model.tokens()[1]
+        tokens = self.model.tokens()
+        _is = tokens[0][1]
 
         assert _is.dep == Dependency.aux
 
     def test_detect_dependency_root(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        looking = self.model.tokens()[2]
+        tokens = self.model.tokens()
+        looking = tokens[0][2]
 
         assert looking.dep == Dependency.root
 
     def test_detect_dependency_prep(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        at = self.model.tokens()[3]
+        tokens = self.model.tokens()
+        at = tokens[0][3]
 
         assert at.dep == Dependency.prep
 
     def test_detect_dependency_pcomp(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        buying = self.model.tokens()[4]
+        tokens = self.model.tokens()
+        buying = tokens[0][4]
 
         assert buying.dep == Dependency.pcomp
 
     def test_detect_dependency_compund(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        UK = self.model.tokens()[5]
+        tokens = self.model.tokens()
+        UK = tokens[0][5]
 
         assert UK.dep == Dependency.compound
 
     def test_detect_dependency_dobj(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        startup = self.model.tokens()[6]
+        tokens = self.model.tokens()
+        startup = tokens[0][6]
 
         assert startup.dep == Dependency.dobj
 
     def test_detect_dependency_quantmod(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        dollar = self.model.tokens()[8]
+        tokens = self.model.tokens()
+        dollar = tokens[0][8]
 
         assert dollar.dep == Dependency.quantmod
 
     def test_detect_dependency_pobj(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        billion = self.model.tokens()[10]
+        tokens = self.model.tokens()
+        billion = tokens[0][10]
 
         assert billion.dep == Dependency.pobj
+
+    def test_can_split_text_into_one_list_per_sentence(self):
+        self.model.load("I like apples. He likes apples. She likes Apples.")
+
+        tokens = self.model.tokens()
+
+        i = tokens[0][0]
+        assert i.name == "I"
+
+        he = tokens[1][0]
+        assert he.name == "He"
+
+        she = tokens[2][0]
+        assert she.name == "She"
+
+    def test_can_split_text_into_one_list_per_sentence_no_punctuation(self):
+        self.model.load("i like apples. he likes apples. she likes apples")
+
+        tokens = self.model.tokens()
+
+        i = tokens[0][0]
+        assert i.name == "i"
+
+        he = tokens[1][0]
+        assert he.name == "he"
+
+        she = tokens[2][0]
+        assert she.name == "she"
