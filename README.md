@@ -1,4 +1,18 @@
 # knox-d
-MI-grapg (or Machine learning graph)
+MI-graph (Machine learning graph)
 
 machine learning experts, do things
+
+### Setup: conda environment
+Install conda from [their website](https://docs.anaconda.com/anaconda/install/). (We recommend the mini version / miniconda)
+
+Initialize the environment with:
+- `conda create --name knox-env python=3.8`
+- `activate knox-env`
+- `pip install -r requirements.txt`
+- `python -c "import nltk; nltk.download('punkt')`
+- `python -m spacy download en_core_web_sm`
+And you are good to go.
+
+For developers, you also need to install the test requirements:
+- `pip install -r tests/requirements.txt`
