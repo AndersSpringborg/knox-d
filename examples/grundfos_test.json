@@ -1,0 +1,88 @@
+{
+    "__class__": "Wrapper",
+    "__module__": "knox_source_data_io.models.wrapper",
+    "type": "Model",
+    "schema_location": "/manuals.schema.json",
+    "schema_version": 0.0,
+    "properties": {
+
+        "generator": {
+        "__class__": "Generator",
+        "__module__": "knox_source_data_io.models.wrapper",
+        "app": "GrundfosManuals_Handler",
+        "version": "1.0",
+        "generated_at": "idk"
+        },
+
+        "content": {
+        "__class__": "content",
+        "__module__": "knox_source_data_io.models.content",
+            "properties": {
+                "publisher": "Grundfos A/S",
+                "publishedAt": "05/11-2020",
+                "title": "SQE",
+
+                "sections": {
+                    "__class__": "section",
+                    "__module__": "__main__",
+                    "items": [
+                        {
+                            "__class__": "items",
+                            "properties": {
+                                "page": "4",
+                                "header": "Preinstallation",
+
+                                "paragraphs": {
+                                    "type": "array",
+                                    "items": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "4",
+                                                "text": "If the pump is to be installed in a new well, the well should be fully developed and bailed or blown free of cuttings and sand."
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "5",
+                                                "text": "Submersible well pumps are designed for pumping clear, cold water"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "__class__": "items",
+                            "properties": {
+                                "page": "8",
+                                "header": "Installing the pump",
+
+                                "paragraphs": {
+                                    "type": "array",
+                                    "items": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "9",
+                                                "text": "To install the pump, attach the enclosed data plate sticker at the well head."
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "5",
+                                                "text": "During start-up and operation, the pump must always be completely submerged in water."
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
