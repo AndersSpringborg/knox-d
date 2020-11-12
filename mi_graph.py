@@ -57,7 +57,7 @@ if __name__ == "__main__":
     random_percentage_count()
     inputFile = open(pathToFile)
     content: Content = load_json(inputFile)
-    print("...Loading done")
+    print("...Loading done\n\n")
 
     # Extract corpus
     CORPUS = extract_all_text_from_paragraphs(content)
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     CORPUS = cleaner.lemmatize(CORPUS)
     CORPUS = cleaner.bigrams(CORPUS)
     CORPUS = cleaner.to_lower(CORPUS)
-    print("...Cleaning done")
+    print("...Cleaning done\n\n")
 
     # Instantiate model, load corpus into model and extract tokens
     print("Instantiating the word embedding model...")
@@ -79,21 +79,23 @@ if __name__ == "__main__":
     model = SpacyModel()
     model.load(CORPUS)
     tokens = model.tokens()
-    print("...Instantiating done")
+    print("...Instantiating done\n\n")
 
     # Instantiate knowledge graph information
     print("Loading knowledge graph data...")
     random_percentage_count()
     kgInfo = KnowledgeGraphInfo(tokens, content)
-    print("...Loading done")
+    print("...Loading done\n\n")
 
     # Instantiate knowledge graph and create triples
     print("Instantiating knowledge graph...")
     random_percentage_count()
     knowledgeGraph = KnowledgeGraph("databaseFile.csv")
     knowledgeGraph.generate_triples(kgInfo)
-    print("...Instantiating done")
+    print("...Instantiating done\n\n")
 
     # If --visualisation" or "-v" in args
     if args.visualisation:
+        print("Rendering knowledge graph in new window...")
         knowledgeGraph.show_graph()
+        print("...Visualization closed\n\n")
