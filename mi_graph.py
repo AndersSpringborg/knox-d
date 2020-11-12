@@ -14,7 +14,7 @@ def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
     _parser.add_argument("file", help="Please indicate the json file you want to process.")
 
     _parser.add_argument("--visualisation", "-v", action="store_true", default=False,
-                         help="This option visualises the graph, on plotly, "
+                         help="This option visualizes the graph with plotly, "
                               "after the script has run")
 
     return _parser
