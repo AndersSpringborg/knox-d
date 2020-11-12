@@ -3,6 +3,17 @@ MI-graph (Machine learning graph)
 
 machine learning experts, do things
 
+### Setup: virtualenv environment
+Make sure pip is up-to-date:
+
+`python -m pip install --upgrade pip`
+
+Install `virtualenv`:
+
+`python -m pip install virtualenv`
+
+If you encounter problems see [this](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+
 ### Setup: conda environment
 Install conda from [their website](https://docs.anaconda.com/anaconda/install/). (We recommend the mini version / miniconda)
 
