@@ -25,7 +25,7 @@ On windows 10 you can run:
 
 in your powershell, to activate the environment.
 
-If running scripts is denied - run following command to remove restriction. [Stackoverflow](https://stackoverflow.com/questions/4037939/powershell-says-execution-of-scripts-is-disabled-on-this-system)
+If running scripts is denied - run the following command to remove the restriction. [Stackoverflow](https://stackoverflow.com/questions/4037939/powershell-says-execution-of-scripts-is-disabled-on-this-system)
 
 `set-executionpolicy remotesigned`
 
