@@ -12,6 +12,24 @@ Install `virtualenv`:
 
 `python -m pip install virtualenv`
 
+#### Activate environment
+To create an environment run:
+
+`python -m venv env`
+
+to create an environment with the name "env". Now to activate the environment run the activate script based on your OS in "env/Scripts".
+
+On windows 10 you can run:
+
+`env/Scripts/Activate.ps1`
+
+in your powershell, to activate the environment.
+
+#### Install dependencies
+To install dependencies run:
+
+`pip install -r .\requirements.txt`
+
 If you encounter problems see [this](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
 ### Setup: conda environment
@@ -25,5 +43,7 @@ Initialize the environment with:
 - `python -m spacy download en_core_web_sm`
 And you are good to go.
 
+
+### Test dependencies
 For developers, you also need to install the test requirements:
 - `pip install -r tests/requirements.txt`
