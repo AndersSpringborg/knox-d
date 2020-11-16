@@ -1,6 +1,5 @@
 import re
 import spacy
-import nltk
 from preprocess.cleaner import Cleaner
 
 
@@ -9,17 +8,33 @@ class CleanerImp(Cleaner):
     First implementation of super class
     """
 
-    def bigrams(self, words: str) -> [tuple]:
-        word_tokens = nltk.word_tokenize(words)
-        bigram_tokens = nltk.bigrams(word_tokens)
+    def bigrams(self, sentence: str) -> str:
+        nlp = spacy.load('en_core_web_sm')
+        doc = nlp(sentence)
 
-        return list(bigram_tokens)
+        for noun_phrase in list(doc.noun_chunks):
+            if noun_phrase.string.endswith(' '):
+                bigram = noun_phrase.string
+                # Remove trailing whitespace in noun_phrase to avoid:
+                # "ice cream " --> "ice_cream_"
+                # Insted of "ice cream " --> "ice_cream "
+                bigram = bigram.strip(' ')
+                bigram = bigram.replace(' ', '_')
+                bigram += ' '
+            else:
+                bigram = noun_phrase.string
+                bigram = bigram.strip(' ')
+                bigram = bigram.replace(' ', '_')
+
+            sentence = sentence.replace(noun_phrase.string, bigram)
+
+        return sentence
 
     def to_lower(self, words):
         return words.lower()
 
     def remove_special_characters(self, txt):
-        cleaned_text = re.sub("[^a-zA-Z ]", '', txt)
+        cleaned_text = re.sub("[^a-zA-Z. ]", '', txt)
         return cleaned_text
 
     def numbers_to_text(self, text):
@@ -67,6 +82,12 @@ class CleanerImp(Cleaner):
         doc = nlp(words)
 
         return " ".join([token.lemma_ for token in doc])
+
+
+    def insert_pump_name(self, data, pump_name):
+        data = data.replace("the_pump", pump_name)
+        return data
+
 
 # Tasks:
 #

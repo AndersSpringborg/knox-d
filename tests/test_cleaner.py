@@ -4,17 +4,28 @@ from preprocess.cleaner_imp import CleanerImp
 
 class TestCleaner:
 
-    def test_multiple_is_in_returned_list(self):
-        sentence = "Kaare is a tree"
-
-        new_bigrams = self.cleaner.bigrams(sentence)
-        expected_bigrams = [('Kaare', 'is'), ('is', 'a'), ('a', 'tree')]
-        assert all(bigrams in expected_bigrams for bigrams in new_bigrams)
     def setup_method(self):
         self.cleaner = CleanerImp()
 
     def test_init_cleaner(self):
         assert self.cleaner is not None
+
+    def test_can_create_bigram(self):
+        sentence = "I like to eat ice cream in new york."
+        expected = "I like to eat ice_cream in new_york."
+
+        result = self.cleaner.bigrams(sentence)
+
+        assert result == expected
+
+
+    def test_can_create_trigram(self):
+        sentence = "Cloud computing is benefiting major manufacturing companies"
+        expected = "Cloud_computing is benefiting major_manufacturing_companies"
+
+        result = self.cleaner.bigrams(sentence)
+
+        assert result == expected
 
     def test_cleaner_makes_words_to_lowercase(self):
         text = "Hi My Name Is Torben"
@@ -35,6 +46,14 @@ class TestCleaner:
     def test_cleaner_removes_many_special_characters(self):
         text = 'My "#¤&%/)(name! \'is@ torben?¨^`'
         expexted_text = "My name is torben"
+
+        cleaned_text = self.cleaner.remove_special_characters(text)
+
+        assert expexted_text == cleaned_text
+
+    def test_cleaner_removes_many_special_characters_keep_punct(self):
+        text = 'My "#¤&%/)(name! \'is@ torben.?¨^`'
+        expexted_text = "My name is torben."
 
         cleaned_text = self.cleaner.remove_special_characters(text)
 

@@ -8,17 +8,15 @@ class Cleaner(ABC):
     It handles preprocessing
     """
     @abc.abstractmethod
-    def bigrams(self, words: str) -> [tuple]:
+    def bigrams(self, sentence: str) -> str:
         """
         returns list of bigram, from a string
-        a bigram is a tuple of two words ex. ('one', 'two')
+        a bigram is a concatenation of a noun_chunk e.g: "New York" --> "New_York"
 
 
-        Uses nltk punkt. Installed with nltk.download('punkt')
 
-
-        :param words: str
-        :return: word_tokens [tuple]
+        :param sentence: str
+        :return: sentence: str
                 """
 
     @abc.abstractmethod
