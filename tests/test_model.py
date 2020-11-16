@@ -72,8 +72,8 @@ class TestModel:
     def test_detect_dependency_root(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        looking = tokens[0][2]
+        first_sentance= self.model.tokens()[0]
+        looking = first_sentance[2]
 
         assert looking.dep == Dependency.root
 
