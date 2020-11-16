@@ -1,8 +1,9 @@
 # knox-d
+![](assets/sixty_nine.png)
+
 MI-graph (Machine learning graph)
 
 machine learning experts, do things
-
 ## Setup: virtualenv environment
 Make sure pip is up-to-date:
 
