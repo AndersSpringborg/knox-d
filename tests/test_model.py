@@ -80,8 +80,8 @@ class TestModel:
     def test_detect_dependency_prep(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        at = tokens[0][3]
+        first_sentance= self.model.tokens()[0]
+        at = first_sentance[3]
 
         assert at.dep == Dependency.prep
 
