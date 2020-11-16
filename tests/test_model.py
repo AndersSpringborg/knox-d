@@ -88,8 +88,8 @@ class TestModel:
     def test_detect_dependency_pcomp(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        buying = tokens[0][4]
+        first_sentance= self.model.tokens()[0]
+        buying = first_sentance[4]
 
         assert buying.dep == Dependency.pcomp
 
