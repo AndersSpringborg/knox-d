@@ -104,8 +104,8 @@ class TestModel:
     def test_detect_dependency_dobj(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        startup = tokens[0][6]
+        first_sentance= self.model.tokens()[0]
+        startup = first_sentance[6]
 
         assert startup.dep == Dependency.dobj
 
