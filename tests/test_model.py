@@ -32,8 +32,8 @@ class TestModel:
     def test_token_has_label(self):
         self.model.load("apple")
 
-        tokens = self.model.tokens()
-        token = tokens[0].pop()
+        first_sentance= self.model.tokens()[0]
+        token = first_sentance.pop()
 
         assert token.pos_tag == GrammarCategories.noun
 
