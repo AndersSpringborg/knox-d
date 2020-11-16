@@ -96,8 +96,8 @@ class TestModel:
     def test_detect_dependency_compund(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        UK = tokens[0][5]
+        first_sentance= self.model.tokens()[0]
+        UK = first_sentance[5]
 
         assert UK.dep == Dependency.compound
 
