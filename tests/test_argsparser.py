@@ -25,26 +25,3 @@ class TestArgsParser:
         parser = self.mi_parser.parse_args(empty_args)
 
         assert parser.visualisation == False
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
