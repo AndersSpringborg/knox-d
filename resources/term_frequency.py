@@ -39,7 +39,8 @@ class TermFrequency:
             self.terms[term].append(doc_title)
 
 
-class DocCounter(Counter):  # pylint: disable=W0223
+class DocCounter(Counter):  # pylint: disable=W0223 abstract method is not overwritten
+    # The Counter object, choose, not to implement it.
     """
     A counter object with a added length and vocab var
     """
