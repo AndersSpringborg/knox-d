@@ -39,15 +39,42 @@ class TestTermFrequency:
 
         self.term_index.process(doc_1, word)
         self.term_index.process(doc_2, word)
-        doc_from_words = self.term_index[word]
+        doc_from_words = self.term_index.terms[word]
 
         assert all(doc in doc_from_words
                    for doc in [doc_1, doc_2])
 
     def test_get_documents_where_a_word_is_found(self):
-        term = 'word'
-        self.term_index.process(self.doc, term)
+        word = 'word'
+        self.term_index.process(self.doc, word)
 
-        doc_from_words = self.term_index[term]
+        doc_from_words = self.term_index.terms[word]
 
         assert self.doc in doc_from_words
+
+    def test_count_all_words_in_doc(self):
+        five_words = "lorem ipsum dolor sit amet"
+        doc = 'doc1'
+        self.term_index.process(doc, five_words)
+
+        length = self.term_index[doc].length
+
+        assert length == len(five_words.split(' '))
+
+    def test_count_vocab_in_document(self):
+        two_different_words = "lorem lorem ipsum"
+        doc = 'doc1'
+        self.term_index.process(doc, two_different_words)
+
+        vocab = self.term_index[doc].vocab
+
+        assert vocab == 2
+
+    def test_title_appear_in_corpus(self):
+        corpus = "D42 is a pump"
+        doc = "D42"
+        self.term_index.process(doc, corpus)
+
+        word_document = self.term_index.terms["D42"]
+
+        assert doc in word_document
