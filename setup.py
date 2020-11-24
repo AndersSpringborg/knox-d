@@ -1,6 +1,3 @@
-import subprocess
-import sys
-
 import setuptools
 
 
@@ -31,4 +28,3 @@ setuptools.setup(
 )
 # AAU schema
 # https://repos.libdom.net/
-
