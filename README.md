@@ -12,6 +12,11 @@ You can try it out with our example, and put a -v for visualisation
 
 `mi_graph examples/grundfos_test.json`
 
+### Run under development
+at root level of the repository run:
+
+`python mi_graph file.json`
+
 
 ## Setup: virtualenv environment
 Make sure pip is up-to-date:
