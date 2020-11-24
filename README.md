@@ -72,3 +72,10 @@ And then
 ```bash
 pylint folder/
 ```
+
+## Build module
+- `python3 setup sdist bdist_wheel`
+- `python3 -m twine upload dist/*`
+    
+TODO
+- [ ] upload to knox repo instead of pypi 
