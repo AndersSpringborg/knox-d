@@ -79,6 +79,7 @@ pylint folder/
 ```
 
 ## Build module
+You cannot be in a virtual environment, when building
 - `python3 setup sdist bdist_wheel`
 - `python3 -m twine upload dist/*`
     
