@@ -53,7 +53,6 @@ Initialize the environment with:
 - `conda create --name knox-env python=3.8`
 - `activate knox-env`
 - `pip install -r requirements.txt`
-- `python -m spacy download en_core_web_sm`
 And you are good to go.
 
 
