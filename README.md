@@ -3,6 +3,16 @@ MI-graph (Machine learning graph)
 
 machine learning experts, do things
 
+## Usage
+run the following commands
+- `pip install knox-mi-graph`
+- `mi_graph input.json`
+
+You can try it out with our example, and put a -v for visualisation
+
+`mi_graph examples/grundfos_test.json`
+
+
 ## Setup: virtualenv environment
 Make sure pip is up-to-date:
 
