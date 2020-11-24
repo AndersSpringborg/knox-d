@@ -1,16 +1,18 @@
 #!/usr/bin/python3
 import os
 from argparse import ArgumentParser
+
 from loader.file_loader import load_json
 from preprocess.cleaner_imp import CleanerImp
 from word_embedding.spacy_model import SpacyModel
-from knowledge_graph.knowledgegraph import KnowledgeGraph
+from mi_graph.knowledgegraph import KnowledgeGraph
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from resources.json_wrapper import Content
 from resources.random_number_gen import random_percentage_count
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
+    _parser.prog = "mi-graph"
     _parser.add_argument("file", help="Please indicate the json file you want to process.")
 
     _parser.add_argument("--visualisation", "-v", action="store_true", default=False,
@@ -43,11 +45,27 @@ def extract_all_text_from_paragraphs(data: Content):
     return text
 
 
-if __name__ == "__main__":
+def ensure_models_installed():
+    OKCYAN = '\033[96m'
+    ENDC = '\033[0m'
 
+    import spacy
+    if not spacy.util.is_package("en_core_web_sm"):
+        print(f"{OKCYAN}Missing models. Install spacy en-core-web-sm model{ENDC}")
+        from spacy.cli import download
+        download("en_core_web_sm")
+
+
+def cli():
     # Setup the parser and parse the arguments
     parser = setup_parser(ArgumentParser())
-    args = parser.parse_args()
+    try:
+        args = parser.parse_args()
+    except SystemExit:
+        parser.print_help()
+        raise
+
+    ensure_models_installed()
 
     # Make path of the input file real and absolute. Ensures cross platform compatibility
     pathToFile = make_path(args.file)
