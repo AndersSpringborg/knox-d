@@ -39,6 +39,13 @@ If running scripts is denied - run the following command to remove the restricti
 
 `set-executionpolicy remotesigned`
 
+### Install dependencies
+To install dependencies run:
+
+`pip install -r .\requirements.txt`
+
+If you encounter problems see [this](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+
 ## Setup: conda environment
 Install conda from [their website](https://docs.anaconda.com/anaconda/install/). (We recommend the mini version / miniconda)
 
@@ -46,16 +53,8 @@ Initialize the environment with:
 - `conda create --name knox-env python=3.8`
 - `activate knox-env`
 - `pip install -r requirements.txt`
-- `python -c "import nltk; nltk.download('punkt')`
 - `python -m spacy download en_core_web_sm`
 And you are good to go.
-
-### Install dependencies
-To install dependencies run:
-
-`pip install -r .\requirements.txt`
-
-If you encounter problems see [this](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
 
 ## Test dependencies
