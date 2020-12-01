@@ -30,13 +30,14 @@ class TermFrequency:
         """
         Process text, given a document title
         """
-        for term in sentence.split(' '):
+        for word in sentence.split(' '):
             self[doc_title].length += 1
-            self[doc_title][term] += 1
+            self[doc_title][word] += 1
 
-            if term not in self.terms.keys():
-                self.terms[term] = []
-            self.terms[term].append(doc_title)
+            if word not in self.terms.keys():
+                self.terms[word] = []
+            if doc_title not in self.terms[word]:
+                self.terms[word].append(doc_title)
 
 
 class DocCounter(Counter):  # pylint: disable=W0223

@@ -78,3 +78,13 @@ class TestTermFrequency:
         word_document = self.term_index.terms["D42"]
 
         assert doc in word_document
+
+    def test_doc_do_not_appear_twice_lookup_word(self):
+        corpus = "the the"
+        doc = "D42"
+        self.term_index.process(doc, corpus)
+
+        word_documents = self.term_index.terms["the"]
+
+        assert len(word_documents) == 1
+
