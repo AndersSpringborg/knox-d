@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import os
 from argparse import ArgumentParser
 from loader.file_loader import load_json
@@ -8,6 +7,7 @@ from word_embedding.spacy_model import SpacyModel
 from knowledge_graph.knowledgegraph import KnowledgeGraph
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from resources.json_wrapper import Content
+from resources.random_number_gen import random_percentage_count
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
@@ -53,32 +53,49 @@ if __name__ == "__main__":
     pathToFile = make_path(args.file)
 
     # Load json file into data structures (Content, Section, Paragraph)
+    print("Loading input JSON file into structures...")
+    random_percentage_count()
     inputFile = open(pathToFile)
     content: Content = load_json(inputFile)
+    print("...Loading done\n\n")
 
     # Extract corpus
     CORPUS = extract_all_text_from_paragraphs(content)
 
     # Preprocess the paragraphs in the json file
+    print("Cleaning the JSON file")
+    random_percentage_count()
     cleaner = CleanerImp()
     CORPUS = cleaner.remove_special_characters(CORPUS)
     CORPUS = cleaner.numbers_to_text(CORPUS)
     CORPUS = cleaner.lemmatize(CORPUS)
     CORPUS = cleaner.bigrams(CORPUS)
     CORPUS = cleaner.to_lower(CORPUS)
+    print("...Cleaning done\n\n")
 
     # Instantiate model, load corpus into model and extract tokens
+    print("Instantiating the word embedding model...")
+    random_percentage_count()
     model = SpacyModel()
     model.load(CORPUS)
     tokens = model.tokens()
+    print("...Instantiating done\n\n")
 
     # Instantiate knowledge graph information
+    print("Loading knowledge graph data...")
+    random_percentage_count()
     kgInfo = KnowledgeGraphInfo(tokens, content)
+    print("...Loading done\n\n")
 
     # Instantiate knowledge graph and create triples
+    print("Instantiating knowledge graph...")
+    random_percentage_count()
     knowledgeGraph = KnowledgeGraph("databaseFile.csv")
-    knowledgeGraph.generate_triples(kgInfo, print_kg=True)
+    knowledgeGraph.generate_triples(kgInfo)
+    print("...Instantiating done\n\n")
 
     # If --visualisation" or "-v" in args
     if args.visualisation:
+        print("Rendering knowledge graph in new window...")
         knowledgeGraph.show_graph()
+        print("...Visualization closed\n\n")

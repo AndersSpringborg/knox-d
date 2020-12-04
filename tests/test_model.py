@@ -32,16 +32,16 @@ class TestModel:
     def test_token_has_label(self):
         self.model.load("apple")
 
-        tokens = self.model.tokens()
-        token = tokens[0].pop()
+        first_sentance= self.model.tokens()[0]
+        token = first_sentance.pop()
 
         assert token.pos_tag == GrammarCategories.noun
 
     def test_token_can_have_adj_label(self):
         self.model.load("good")
 
-        tokens = self.model.tokens()
-        token = tokens[0].pop()
+        first_sentance = self.model.tokens()[0]
+        token =  first_sentance.pop()
 
         assert token.pos_tag == GrammarCategories.adj
 
@@ -72,40 +72,40 @@ class TestModel:
     def test_detect_dependency_root(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        looking = tokens[0][2]
+        first_sentance= self.model.tokens()[0]
+        looking = first_sentance[2]
 
         assert looking.dep == Dependency.root
 
     def test_detect_dependency_prep(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        at = tokens[0][3]
+        first_sentance= self.model.tokens()[0]
+        at = first_sentance[3]
 
         assert at.dep == Dependency.prep
 
     def test_detect_dependency_pcomp(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        buying = tokens[0][4]
+        first_sentance= self.model.tokens()[0]
+        buying = first_sentance[4]
 
         assert buying.dep == Dependency.pcomp
 
     def test_detect_dependency_compund(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        UK = tokens[0][5]
+        first_sentance= self.model.tokens()[0]
+        UK = first_sentance[5]
 
         assert UK.dep == Dependency.compound
 
     def test_detect_dependency_dobj(self):
         self.model.load("Apple is looking at buying U.K. startup for $1 billion")
 
-        tokens = self.model.tokens()
-        startup = tokens[0][6]
+        first_sentance= self.model.tokens()[0]
+        startup = first_sentance[6]
 
         assert startup.dep == Dependency.dobj
 
