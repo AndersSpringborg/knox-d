@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     # Instantiate knowledge graph and create triples
     knowledgeGraph = KnowledgeGraph("databaseFile.csv")
-    knowledgeGraph.generate_triples(kgInfo)
+    knowledgeGraph.generate_triples(kgInfo, print_kg=True)
 
     # If --visualisation" or "-v" in args
     if args.visualisation:
