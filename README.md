@@ -5,7 +5,7 @@ machine learning experts, do things
 
 ## Usage
 run the following commands
-- `pip install knox-mi-graph`
+- `pip install --extra-index-url https://repos.knox.cs.aau.dk knox-mi-graph`
 - `mi_graph input.json`
 
 You can try it out with our example, and put a -v for visualisation
