@@ -9,6 +9,7 @@ class TermFrequency:
     The text is expected to be preprocessed
 
     ex.
+    from resources.term_frequency import TermFrequency
     tf = TermFrequency()
     tf.process(doc.title, doc.corpus)
 
