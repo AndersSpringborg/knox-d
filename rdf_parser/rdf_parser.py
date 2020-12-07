@@ -8,13 +8,13 @@ class RdfParser:
     Used for parsing custom namespace and ontology,
     this allows using relationships that works for the custom contexts.
     For the KNOX project it would either be Grundfos or Nordjyske.
-    
+
     Methods
     -------
     use_ontology_from_path(file_path, file_ext)
         This method loads a given ontology and parses it to a specified format.
         If no file_ext is specified, the default is "ttl" (turtle)
-    
+
     Attributes
     ----------
     self.GRUNDFOS : rdflib.ClosedNamespace
@@ -84,22 +84,8 @@ class RdfParser:
 
         return URIRef(full_ref.replace(" ", "_"))
 
-    def parse_rdfdata_from_path(self, file_path, file_ext):
-        """This method loads a given rdf file and parses it with a specified format
-
-        If no file_ext is specified, the default is "ttl" (turtle)
-
-        Parameters
-        ----------
-        file_path : str
-            The location of the file containing the rdf data
-        file_ext : str, optional
-            The file extension on the file you want to load (default is ttl)
-        """
-        self.rdf_graph.parse(file_path, format=file_ext)
-
     def store_knowledge_graph(self, output_folder_path, file_name, output_format):
-        """Stores the knowledge graph in a file in a user specified location. 
+        """Stores the knowledge graph in a file in a user specified location.
 
         Parameters
         ----------
@@ -114,7 +100,7 @@ class RdfParser:
 
     def pretty_print_knowledge_graph(self):
         """This method is used to print out the knowledge graph in a human readable way.
-       
+
         Be aware that it goes thorugh every triple in the knowledge graph
         """
         print(self.rdf_graph.serialize(format="turtle").decode("utf-8"))
@@ -127,7 +113,7 @@ class RdfParser:
 
         Make sure the term is within the namespaces.
         Parameters
-        ---------- 
+        ----------
         namespace : str
             Namespace containing the wanted term
         term : str

@@ -3,21 +3,12 @@ import pytest
 from rdflib import Graph, Literal, RDF, URIRef, BNode, term
 from rdf_parser.rdf_parser import RdfParser
 from rdf_parser.literal_type import LiteralType
+import os
 
 class TestRdfParser:
     def setup_method(self):
         self.rdf_parser = RdfParser("file://testing.namespace.dk/")
 
-    def test_can_parse_rdf_file(self):
-        try:
-            self.rdf_parser.parse_rdfdata_from_path(file_path="grundfos_ontology/grundfos.ttl", file_ext="ttl")
-        except Exception:
-            pytest.fail("RdfParser threw execption")
-
-    def test_should_fail_on_file_not_found(self):
-        with pytest.raises(Exception):
-            self.rdf_parser.parse_rdfdata_from_path("some/random/path", "ttl")
-    
     def test_should_be_able_to_add_triple(self):
         self.rdf_parser.add_rdf_triple(
             (self.rdf_parser.generate_rdf_literal("this is", LiteralType.STRING),
@@ -31,7 +22,7 @@ class TestRdfParser:
         self.rdf_parser.add_rdf_triple((None, self.rdf_parser.generate_rdf_literal("Test literal"), None))
         self.rdf_parser.add_rdf_triple((None, None, self.rdf_parser.generate_rdf_literal("Test literal")))
         assert len(self.rdf_parser.rdf_graph) == 0
-    
+
     def test_should_generate_correct_uriref(self):
         uri_ref = self.rdf_parser.generate_rdf_uri_ref("name of unit", ["manual"])
         assert uri_ref == term.URIRef("file://testing.namespace.dk/manual/name_of_unit")
