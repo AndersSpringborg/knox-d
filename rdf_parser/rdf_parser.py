@@ -1,6 +1,8 @@
 from rdflib import Graph, Literal, RDF, URIRef, BNode
 from rdflib.namespace import XSD, RDFS, ClosedNamespace, OWL
 from rdf_parser.literal_type import LiteralType, LiteralTypeSwitch
+from resources.error import error
+from resources.knox_triples import Triple
 
 
 class RdfParser:
@@ -41,9 +43,12 @@ class RdfParser:
         self.rdf_graph.bind("owl", OWL)
         self.namespace_base = namespace_base
 
-    def add_rdf_triple(self, rdf_triple):
-        if rdf_triple[0] and rdf_triple[1] and rdf_triple[2]:
-            self.rdf_graph.add(rdf_triple)
+    def add_rdf_triple(self, rdf_triple: Triple):
+        try:
+            triple = rdf_triple.parse()
+            self.rdf_graph.add(triple)
+        except KeyError as err:
+            error("the key is wrong", err)
 
     @staticmethod
     def generate_rdf_literal(value, literalType: LiteralType = LiteralType.STRING):
@@ -129,21 +134,18 @@ class RdfParser:
         closednamespaceterm
             A closed namespace term
         """
-        try:
-            if namespace == "rdf":
-                return RDF.term(term)
-            elif namespace == "rdfs":
-                return RDFS.term(term)
-            elif namespace == "owl":
-                return OWL.term(term)
-            elif namespace == "xsd":
-                return XSD.term(term)
-            elif namespace == "grundfos":
-                return self.GRUNDFOS.term(term)
-            else:
-                raise Exception("Namespace not found")
-        except Exception:
-            return None
+        if namespace == "rdf":
+            return RDF.term(term)
+        elif namespace == "rdfs":
+            return RDFS.term(term)
+        elif namespace == "owl":
+            return OWL.term(term)
+        elif namespace == "xsd":
+            return XSD.term(term)
+        elif namespace == "grundfos":
+            return self.GRUNDFOS.term(term)
+        else:
+            raise Exception("Namespace not found")
 
     @staticmethod
     def generate_rdf_blank_node():

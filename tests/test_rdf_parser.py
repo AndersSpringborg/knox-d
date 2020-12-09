@@ -9,6 +9,7 @@ class TestRdfParser:
     def setup_method(self):
         self.rdf_parser = RdfParser("file://testing.namespace.dk/")
 
+
     def test_should_be_able_to_add_triple(self):
         self.rdf_parser.add_rdf_triple(
             (self.rdf_parser.generate_rdf_literal("this is", LiteralType.STRING),
