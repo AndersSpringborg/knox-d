@@ -1,0 +1,107 @@
+@prefix grundfos: <http://www.knoxproject.aau.dk/grundfos/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# FORMAL SEMANTICS
+
+## CLASS DEFINITIONS
+<http://www.knoxproject.aau.dk/grundfos/>
+	rdf:type owl:Ontology .
+
+grundfos:Manual
+    rdf:type owl:Class ;
+    rdfs:comment "A grundfos manual" .
+
+grundfos:Organisation
+	rdf:type owl:Class .
+
+grundfos:Author
+	rdf:type owl:Class ;
+	rdfs:subClassOf grundfos:Organisation .
+
+grundfos:Date
+	a owl:Class .
+	
+grundfos:Publisher
+	a owl:Class ;
+	rdfs:domain grundfos:Manual .
+
+grundfos:Page
+    a owl:Class ;
+    rdfs:domain grundfos:Manual .
+
+grundfos:Section
+    a owl:Class ;
+    rdfs:domain grundfos:Manual .
+
+grundfos:Unit
+    rdf:type owl:Class ;
+    rdfs:comment "A unit is what the manual is about" .
+
+grundfos:Pump
+    rdf:type owl:Class ;
+    rdfs:comment "A pump mentioned in a manual" .
+
+
+## RELATIONSHIP DEFINITIONS
+grundfos:isWrittenBy 
+	rdf:type owl:ObjectProperty ;
+	rdfs:domain grundfos:Manual ;
+    rdfs:range grundfos:Author .
+
+grundfos:isPublishedBy 
+	rdf:type owl:ObjectProperty ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:range grundfos:Organisation .
+
+grundfos:isPublishedAt
+	rdf:type owl:ObjectProperty ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:range grundfos:Date .
+
+grundfos:mentionedOn
+    rdf:type owl:ObjectProperty ;
+	rdfs:domain grundfos:Unit ;
+	rdfs:range grundfos:Page .
+
+grundfos:isInSection
+    rdf:type owl:ObjectProperty ;
+	rdfs:domain grundfos:Page ;
+    rdfs:range grundfos:Section .
+
+## DATATYPES OF THE CLASSS
+grundfos:Title
+	a owl:DatatypeProperty ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:range xsd:string .
+
+grundfos:Link
+	rdf:type owl:DatatypeProperty ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:range xsd:string .
+
+grundfos:Name
+	a owl:DatatypeProperty ;
+	rdfs:domain grundfos:Unit ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:domain grundfos:Author ;
+	rdfs:domain grundfos:Organisation ;
+	rdfs:range xsd:string .
+
+grundfos:PublicationDate
+	a owl:DatatypeProperty ;
+	rdfs:domain grundfos:Manual ;
+	rdfs:range xsd:dateTime .
+
+grundfos:pageNumber
+    a owl:DatatypeProperty ;
+    rdfs:domain grundfos:Page ;
+	rdfs:range xsd:integer .
+
+grundfos:sectionTitle
+    a owl:DatatypeProperty ;
+    rdfs:domain grundfos:Section ;
+	rdfs:range xsd:string .

@@ -1,16 +1,19 @@
 import os
+from rdf_parser.literal_type import LiteralType
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
-from resources.triple_container import Triple
+from resources import knox_triples
 from resources.json_wrapper import Content
 from word_embedding.dependency import Dependency
+from rdf_parser.rdf_parser import RdfParser
+from resources.error import error
 
 
 class KnowledgeGraph:
     """
-    Generates triples from the text which has been natural language processed,
+    Generates knox_triples.py from the text which has been natural language processed,
     and the metadata extracted from a Content object.
     Triples are saved to the database(.csv) file provided to the object during instantiation.
     """
@@ -21,10 +24,11 @@ class KnowledgeGraph:
 
     def __init__(self, _database_path):
         self.database_path = _database_path
+        self.rdf_parser = RdfParser()
 
-    def generate_triples(self, kg_info: KnowledgeGraphInfo):
+    def generate_triples(self, kg_info: KnowledgeGraphInfo, print_kg: bool = False):
         """
-        Generates triples (subj, rel, obj) from the text which has been natural language processed
+        Generates knox_triples.py (subj, rel, obj) from the text which has been natural language processed
         and the metadata extracted from a Content object
         """
         triples = []
@@ -35,7 +39,8 @@ class KnowledgeGraph:
         self.__create_branches(triples)
 
         self.__save_to_file()
-
+        if print_kg:
+            self.rdf_parser.pretty_print_knowledge_graph()
 
     def show_graph(self):
         """
@@ -64,38 +69,48 @@ class KnowledgeGraph:
     def __process_metadata(self, content: Content):
         triples = []
 
-        triples.extend(self.__create_relations_for_manual(content))
-        triples.extend(self.__create_relations_for_sections(content))
+        triples.extend(self.__create_relations_for_manual(content, self))
+        triples.extend(self.__create_relations_for_sections(content, self))
 
         return triples
 
     @staticmethod
-    def __create_relations_for_manual(content: Content):
+    def __create_relations_for_manual(content: Content, self):
         triples = []
+        self.rdf_parser.get_term("rdf", "lolmand")
+        manual_uri = self.rdf_parser.generate_rdf_uri_ref(ref=content.title, sub_uris=["manual"])
 
         if content.publisher:
-            triples.append(Triple("manual", "publishedBy", content.publisher))
+            triples.append(knox_triples.Triple("manual", "publishedBy", content.publisher))
+            self.rdf_parser.add_rdf_triple(knox_triples.PublishTriple(manual_uri, content.publisher))
 
         if content.published_at:
-            triples.append(Triple("manual", "publishedAt", content.published_at))
+            triples.append(knox_triples.Triple("manual", "publishedAt", content.published_at))
+            self.rdf_parser.add_rdf_triple(knox_triples.PublishedAtTriple(content.published_at, content.title))
 
         if content.title:
-            triples.append(Triple("manual", "describes", content.title))
+            triples.append(knox_triples.Triple("manual", "describes", content.title))
+            self.rdf_parser.add_rdf_triple(knox_triples.TitleTriple(content.title))
 
         if content.sections:
             for sec in content.sections:
+                section_uri = self.rdf_parser.generate_rdf_uri_ref(ref=sec.header, sub_uris=["manual", content.title, "section"])
                 triples.append(Triple("manual", "contains", sec.header))
-
+                self.rdf_parser.add_rdf_triple((section_uri, self.rdf_parser.get_term("rdf", "type"), self.rdf_parser.get_term("grundfos", "Section")))
         return triples
 
     @staticmethod
-    def __create_relations_for_sections(content: Content):
+    def __create_relations_for_sections(content: Content, self):
         triples = []
 
         if content.sections:
             for sec in content.sections:
+                section_uri = self.rdf_parser.generate_rdf_uri_ref(ref=sec.header, sub_uris=["manual", content.title, "section"])
                 if sec.header and sec.page:
+                    page_uri = self.rdf_parser.generate_rdf_uri_ref(ref=sec.page, sub_uris=["manual", content.title, "section", "page"])
                     triples.append(Triple(sec.header, "isAt", sec.page))
+                    self.rdf_parser.add_rdf_triple((page_uri, self.rdf_parser.get_term("rdf", "type"), self.rdf_parser.get_term("grundfos", "Page")))
+                    self.rdf_parser.add_rdf_triple((page_uri, self.rdf_parser.get_term("grundfos", "isInSection"), section_uri))
 
         return triples
 
@@ -114,7 +129,24 @@ class KnowledgeGraph:
             else:
                 continue
 
+        self.__parse_obj_relation_subj(obj, relation, subj)
+
         return Triple(subj.strip(), relation.strip(), obj.strip())
+
+    def __parse_obj_relation_subj(self, obj, relation, subj):
+        relation_term = self.rdf_parser.get_term("grundfos", relation.strip())
+        subject_term = self.rdf_parser.get_term("grundfos", subj.strip())
+
+        if relation_term and subject_term:
+            object_term = self.rdf_parser.get_term("grundfos", obj.strip())
+
+            if not object_term:
+                object_term = self.rdf_parser.generate_rdf_literal(obj.strip(), LiteralType.STRING)
+
+            self.rdf_parser.add_rdf_triple((subject_term, relation_term, object_term))
+
+        else:
+            pass
 
     @staticmethod
     def __is_subject(token):

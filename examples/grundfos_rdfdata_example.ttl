@@ -1,0 +1,28 @@
+@prefix grundfos: <http://www.knoxproject.aau.dk/grundfos/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.knoxproject.aau.dk/manual/SQE> a grundfos:Manual ;
+    grundfos:Title "SQE"^^xsd:string ;
+    grundfos:isPublishedAt "2020-11-05"^^xsd:date .
+
+<http://www.knoxproject.aau.dk/manual/SQE/section/page/4> a grundfos:Page ;
+    grundfos:isInSection <http://www.knoxproject.aau.dk/manual/SQE/section/Preinstallation> .
+
+<http://www.knoxproject.aau.dk/manual/SQE/section/page/8> a grundfos:Page ;
+    grundfos:isInSection <http://www.knoxproject.aau.dk/manual/SQE/section/Installing_the_pump> .
+
+""^^xsd:string "at"^^xsd:string "head"^^xsd:string ;
+    "comply"^^xsd:string "local_regulation"^^xsd:string .
+
+"the_isolate_valve"^^xsd:string "make"^^xsd:string "clean_water"^^xsd:string .
+
+"the_pump"^^xsd:string grundfos:be "startup"^^xsd:string ;
+    grundfos:develop "well"^^xsd:string ;
+    "attach"^^xsd:string "mean"^^xsd:string .
+
+"well_pump"^^xsd:string grundfos:be "clear_cold_waterwarning"^^xsd:string .
+
+<http://www.knoxproject.aau.dk/manual/SQE/section/Installing_the_pump> a grundfos:Section .
+
+<http://www.knoxproject.aau.dk/manual/SQE/section/Preinstallation> a grundfos:Section .
+

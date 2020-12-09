@@ -1,5 +1,13 @@
 from typing import List
 
+class Manual:
+
+    def __init__(self, ):
+        self.title = ''
+        self.published_by= ''
+        self.published_at= ''
+        self.sections= ''
+
 
 class Paragraph:
     """
