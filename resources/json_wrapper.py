@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 
 
 class Manual:
     def __init__(self, title='', publisher='', published_at='', sections=''):
-        self.title = title
-        self.published_by = publisher
-        self.published_at = published_at
-        self.sections = sections
+        self.title: str = title
+        self.published_by: str = publisher
+        self.published_at: datetime = published_at
+        self.sections: {} = sections
 
 
 class Paragraph:
@@ -57,16 +57,18 @@ class Content:
     def __init__(self, data: dict = None):
 
         if data:
-            self.publisher = data.get("publisher", "")
+            self.publisher = data.get("publisher")
 
-            if publish_date := data.get("publishedAt", ""):
+            if publish_date := data.get("publishedAt"):
                 self.published_at = datetime.strptime(publish_date, '%Y-%d-%m')
 
             self.title = data.get("title", "")
 
-            self.sections: List[Section] = []
+            self.sections: Dict[Section] = {}
 
             if 'sections' in data.keys():
                 json_sections = data["sections"].get("items", [])
                 for sec in json_sections:
-                    self.sections.append(Section(sec['properties']))
+                    section = sec['properties']
+                    header = section['header']
+                    self.sections[header] = Section(section)

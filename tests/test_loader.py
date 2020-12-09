@@ -69,15 +69,14 @@ class TestLoader:
         assert result.sections is not None
 
     def test_assign_correct_page_to_section(self):
-        # Arrange
         fake_file = StringIO(
-            '{"properties": {"content": {"properties": { "sections": { "items": [ {"properties": {"page": "2"} } ] } }}}}')
-        expected = "2"
-        # Act
+            '{"properties": {"content": {"properties": { "sections": { "items": [ {"properties": {"page": "2", "header": "info"} } ] } }}}}')
+        section = "info"
+        expected_page = "2"
+
         result = load_json(fake_file)
 
-        # Assert
-        assert (result.sections[0].page == expected)
+        assert (result.sections[section].page == expected_page)
 
     def test_assign_correct_header_to_section(self):
         # Arrange
