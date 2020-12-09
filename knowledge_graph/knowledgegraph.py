@@ -4,14 +4,16 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
-from resources.triple_container import Triple
+from resources import knox_triples
 from resources.json_wrapper import Content
 from word_embedding.dependency import Dependency
 from rdf_parser.rdf_parser import RdfParser
+from resources.error import error
+
 
 class KnowledgeGraph:
     """
-    Generates triples from the text which has been natural language processed,
+    Generates knox_triples.py from the text which has been natural language processed,
     and the metadata extracted from a Content object.
     Triples are saved to the database(.csv) file provided to the object during instantiation.
     """
@@ -26,7 +28,7 @@ class KnowledgeGraph:
 
     def generate_triples(self, kg_info: KnowledgeGraphInfo, print_kg: bool = False):
         """
-        Generates triples (subj, rel, obj) from the text which has been natural language processed
+        Generates knox_triples.py (subj, rel, obj) from the text which has been natural language processed
         and the metadata extracted from a Content object
         """
         triples = []
@@ -75,20 +77,20 @@ class KnowledgeGraph:
     @staticmethod
     def __create_relations_for_manual(content: Content, self):
         triples = []
-        
+        self.rdf_parser.get_term("rdf", "lolmand")
         manual_uri = self.rdf_parser.generate_rdf_uri_ref(ref=content.title, sub_uris=["manual"])
 
         if content.publisher:
-            triples.append(Triple("manual", "publishedBy", content.publisher))
-            self.rdf_parser.add_rdf_triple((manual_uri, self.rdf_parser.get_term("rdf", "type"), self.rdf_parser.get_term("grundfos", "Manual")))
+            triples.append(knox_triples.Triple("manual", "publishedBy", content.publisher))
+            self.rdf_parser.add_rdf_triple(knox_triples.PublishTriple(manual_uri, content.publisher))
 
         if content.published_at:
-            triples.append(Triple("manual", "publishedAt", content.published_at))
-            self.rdf_parser.add_rdf_triple((manual_uri, self.rdf_parser.get_term("grundfos", "isPublishedAt"), self.rdf_parser.generate_rdf_literal(content.published_at, LiteralType.DATE)))
+            triples.append(knox_triples.Triple("manual", "publishedAt", content.published_at))
+            self.rdf_parser.add_rdf_triple(knox_triples.PublishedAtTriple(content.published_at, content.title))
 
         if content.title:
-            triples.append(Triple("manual", "describes", content.title))
-            self.rdf_parser.add_rdf_triple((manual_uri, self.rdf_parser.get_term("grundfos", "Title"), self.rdf_parser.generate_rdf_literal(content.title, LiteralType.STRING)))
+            triples.append(knox_triples.Triple("manual", "describes", content.title))
+            self.rdf_parser.add_rdf_triple(knox_triples.TitleTriple(content.title))
 
         if content.sections:
             for sec in content.sections:
@@ -133,22 +135,18 @@ class KnowledgeGraph:
 
     def __parse_obj_relation_subj(self, obj, relation, subj):
         relation_term = self.rdf_parser.get_term("grundfos", relation.strip())
-        if relation_term:
-            subject_term = self.rdf_parser.get_term("grundfos", subj.strip())
-            object_term = self.rdf_parser.get_term("grundfos", obj.strip())
+        subject_term = self.rdf_parser.get_term("grundfos", subj.strip())
 
-            if not subject_term:
-                subject_term = self.rdf_parser.generate_rdf_literal(subj.strip(), LiteralType.STRING)
+        if relation_term and subject_term:
+            object_term = self.rdf_parser.get_term("grundfos", obj.strip())
 
             if not object_term:
                 object_term = self.rdf_parser.generate_rdf_literal(obj.strip(), LiteralType.STRING)
 
             self.rdf_parser.add_rdf_triple((subject_term, relation_term, object_term))
+
         else:
-            self.rdf_parser.add_rdf_triple(
-                (self.rdf_parser.generate_rdf_literal(subj.strip(), LiteralType.STRING),
-                 self.rdf_parser.generate_rdf_literal(relation.strip(), LiteralType.STRING),
-                 self.rdf_parser.generate_rdf_literal(obj.strip(), LiteralType.STRING)))
+            pass
 
     @staticmethod
     def __is_subject(token):
