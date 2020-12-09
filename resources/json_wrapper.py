@@ -1,12 +1,13 @@
+from datetime import datetime
 from typing import List
 
-class Manual:
 
-    def __init__(self, ):
-        self.title = ''
-        self.published_by= ''
-        self.published_at= ''
-        self.sections= ''
+class Manual:
+    def __init__(self, titile='', publisher='', published_at='', sections=''):
+        self.title = titile
+        self.published_by = publisher
+        self.published_at = published_at
+        self.sections = sections
 
 
 class Paragraph:
@@ -58,7 +59,8 @@ class Content:
         if data:
             self.publisher = data.get("publisher", "")
 
-            self.published_at = data.get("publishedAt", "")
+            if publish_date := data.get("publishedAt", ""):
+                self.published_at = datetime.strptime(publish_date, '%Y-%d-%m')
 
             self.title = data.get("title", "")
 
