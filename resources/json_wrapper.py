@@ -3,8 +3,8 @@ from typing import List
 
 
 class Manual:
-    def __init__(self, titile='', publisher='', published_at='', sections=''):
-        self.title = titile
+    def __init__(self, title='', publisher='', published_at='', sections=''):
+        self.title = title
         self.published_by = publisher
         self.published_at = published_at
         self.sections = sections

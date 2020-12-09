@@ -51,15 +51,11 @@ class TestLoader:
         assert result.published_at == expected
 
     def test_assign_correct_title_to_content(self):
-        # Arrange
         fake_file = StringIO('{"properties": {"content": {"properties": {"title": "ALPHA1"}}}}')
         expected = "ALPHA1"
 
-        # Act
         result = load_json(fake_file)
-        print(result.publisher)
 
-        # Assert
         assert result.title == expected
 
     def test_can_extract_sections_to_content(self):
