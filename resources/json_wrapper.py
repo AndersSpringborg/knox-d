@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict, List
+from typing import List
 
 
 class Manual:
@@ -7,7 +7,7 @@ class Manual:
         self.title: str = title
         self.published_by: str = publisher
         self.published_at: datetime = published_at
-        self.sections: {} = sections
+        self.sections: [] = sections
 
 
 class Paragraph:
@@ -64,11 +64,23 @@ class Content:
 
             self.title = data.get("title", "")
 
-            self.sections: Dict[Section] = {}
+            self.sections: List[Section] = []
 
             if 'sections' in data.keys():
                 json_sections = data["sections"].get("items", [])
                 for sec in json_sections:
                     section = sec['properties']
-                    header = section['header']
-                    self.sections[header] = Section(section)
+                    self.sections.append(Section(section))
+
+
+def recursive_parse_section(data: {}) -> []:
+    if "sections" in data.keys():
+        section = data['sections']
+        all_sections = [section] + recursive_parse_section(section)
+
+        if "sections" in all_sections[0].keys():
+            del all_sections[0]['sections']
+
+        return all_sections
+    else:
+        return []
