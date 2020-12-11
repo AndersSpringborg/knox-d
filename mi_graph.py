@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from loader.file_loader import load_json
 from preprocess.cleaner_imp import CleanerImp
 from word_embedding.spacy_model import SpacyModel
-from knowledge_graph.knowledgegraph import KnowledgeGraph
+from knowledge_graph.knowledge_graph import KnowledgeGraph
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from resources.json_wrapper import Content
 from resources.random_number_gen import random_percentage_count
@@ -90,12 +90,13 @@ if __name__ == "__main__":
     # Instantiate knowledge graph and create triples
     print("Instantiating knowledge graph...")
     random_percentage_count()
-    knowledgeGraph = KnowledgeGraph("databaseFile.csv")
-    knowledgeGraph.generate_triples(kgInfo)
+    knowledge_graph = KnowledgeGraph()
+    knowledge_graph.generate_triples(kgInfo)
+    knowledge_graph.save_to_csv("here.csv")
     print("...Instantiating done\n\n")
 
     # If --visualisation" or "-v" in args
     if args.visualisation:
         print("Rendering knowledge graph in new window...")
-        knowledgeGraph.show_graph()
+        knowledge_graph.show_graph()
         print("...Visualization closed\n\n")
