@@ -92,7 +92,7 @@ if __name__ == "__main__":
     random_percentage_count()
     knowledge_graph = KnowledgeGraph()
     knowledge_graph.generate_triples(kgInfo)
-    knowledge_graph.save_to_csv("here.csv")
+    knowledge_graph.save_to_database()
     print("...Instantiating done\n\n")
 
     # If --visualisation" or "-v" in args

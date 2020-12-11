@@ -7,3 +7,5 @@ pandas~=1.1.3
 numpy~=1.19.3
 nltk~=3.5
 rdflib~=5.0.0
+pytest~=6.1.2
+requests~=2.24.0

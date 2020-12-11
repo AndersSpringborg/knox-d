@@ -3,7 +3,6 @@ from rdflib.namespace import XSD, RDFS, ClosedNamespace, OWL
 
 from rdf_parser import GRUNDFOS
 from resources.error import error
-from resources.knox_triples import Triple
 
 
 class RdfParser:
@@ -57,10 +56,6 @@ class RdfParser:
         self.rdf_graph.serialize(format=output_format,
                                  destination=output_folder_path + output_file_name + "." + output_format,
                                  encoding="utf-8")
-
-    def save_to_database(self, connection_string: str, triples):
-        # TODO: Save to database, do error handling'n stuff!
-        pass
 
     def pretty_print_knowledge_graph(self):
         """This method is used to print out the knowledge graph in a human readable way.
