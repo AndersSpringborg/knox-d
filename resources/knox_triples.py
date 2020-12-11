@@ -32,6 +32,9 @@ class Triple(ABC):
     def blank_node(self, string: str):
         return rdf_helper.generate_rdf_blank_node(string)
 
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "<" + str(self.obj_()) + ">"
+
 
 class StringTriple(Triple):
     def __init__(self, _subj: str, _rel: str, _obj: str):
@@ -55,6 +58,9 @@ class MetaDataTriple(Triple):
     def obj_(self):
         return self.term("grundfos", "Manual")
 
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "<" + str(self.obj_()) + ">"
+
 
 class PublishTriple(MetaDataTriple):
     def __init__(self, title: str, publisher: str = ''):
@@ -69,6 +75,9 @@ class PublishTriple(MetaDataTriple):
 
     def obj_(self):
         return self.literal(self.publisher, "string")
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "\"" + str(self.obj_()) + "\""
 
 
 class PublishedAtTriple(PublishTriple):
@@ -99,6 +108,9 @@ class TitleTriple(MetaDataTriple):
 
     def obj_(self):
         return self.literal(self.title, "date")
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "\"" + str(self.obj_()) + "\""
 
 
 class SectionTriple(Triple):
