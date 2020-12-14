@@ -1,7 +1,7 @@
 import json
 from io import StringIO
 
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request
 
 from loader.file_loader import load_json
 from mi_graph import pipeline
@@ -18,7 +18,7 @@ def process_manual():
     manual = create_manual_from_request(request.json)
     try:
         pipeline.run(manual)
-    except Exception as error:
+    except Exception as error:  # pylint: disable=W0703
         return Response(response=str(error),
                         status=400,
                         content_type='application/json')

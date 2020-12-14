@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import json
 import sys
 from argparse import ArgumentParser
 
@@ -9,7 +8,6 @@ from spacy.cli import download
 
 from loader.file_loader import load_json
 from mi_graph import api, pipeline
-from resources.random_number_gen import random_percentage_count
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:

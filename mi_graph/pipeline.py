@@ -3,12 +3,14 @@ import json
 import requests
 
 from resources.term_frequency import TermFrequency
-from .knowledge_graph import KnowledgeGraph
 from resources.json_wrapper import Manual
-from preprocess.cleaner_imp import CleanerImp
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from resources.random_number_gen import random_percentage_count
+
+from preprocess.cleaner_imp import CleanerImp
+
 from word_embedding.spacy_model import SpacyModel
+from .knowledge_graph import KnowledgeGraph
 
 
 def create_knowledge_graph(manual):
