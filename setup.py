@@ -1,15 +1,16 @@
 import setuptools
 
-
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
+
+def REQUIREMENTS():
+    return [i.strip() for i in open("requirements.txt").readlines()]
+
 
 setuptools.setup(
     name="knox-mi-graph",  # Replace with your own username
-    version="0.1.2",
+    version="1.0.2",
     author="Foersteholdet",
     author_email="sw514e20@cs.aau.dk",
     description="Knowledge graph builder",
@@ -17,7 +18,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://git.its.aau.dk/Knox/mi-graph",
     packages=setuptools.find_packages(),
-    install_requires=REQUIREMENTS,
+    install_requires=REQUIREMENTS(),
     entry_points={"console_scripts": ['mi_graph=mi_graph:cli']},
     classifiers=[
         "Programming Language :: Python :: 3",
