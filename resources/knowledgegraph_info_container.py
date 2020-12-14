@@ -1,5 +1,5 @@
 from typing import List
-from resources.json_wrapper import Content
+from resources.json_wrapper import Manual
 
 
 class KnowledgeGraphInfo:
@@ -7,8 +7,8 @@ class KnowledgeGraphInfo:
     Data-structure for the information needed to construct a knowledge graph object
     """
     sentences: List[list]
-    content: Content
+    manual: Manual
 
-    def __init__(self, _sentences = None, _content = None):
+    def __init__(self, _sentences=None, _manual=None):
         self.sentences = _sentences
-        self.content = _content
+        self.manual = _manual

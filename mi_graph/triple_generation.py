@@ -1,9 +1,9 @@
 from resources import knox_triples
-from resources.json_wrapper import Content, Section
+from resources.json_wrapper import Section, Manual
 from word_embedding.dependency import Dependency
 
 
-def generate_triples_for_metadata(content: Content):
+def generate_triples_for_metadata(content: Manual):
     triples = []
 
     triples.extend(generate_triples_for_manual(content))
@@ -12,35 +12,35 @@ def generate_triples_for_metadata(content: Content):
     return triples
 
 
-def generate_triples_for_manual(content: Content):
+def generate_triples_for_manual(manual: Manual):
     triples = []
 
-    if content.publisher:
-        triples.append(knox_triples.PublishTriple(content.title, content.publisher))
+    if manual.published_by:
+        triples.append(knox_triples.PublishTriple(manual.title, manual.published_by))
 
-    if content.published_at:
-        triples.append(knox_triples.PublishedAtTriple(content.title, content.published_at))
+    if manual.published_at:
+        triples.append(knox_triples.PublishedAtTriple(manual.title, manual.published_at))
 
-    if content.title:
-        triples.append(knox_triples.MetaDataTriple(content.title))
-        triples.append(knox_triples.TitleTriple(content.title))
+    if manual.title:
+        triples.append(knox_triples.MetaDataTriple(manual.title))
+        triples.append(knox_triples.TitleTriple(manual.title))
 
-    if content.sections:
-        for sec in content.sections:
-            triples.append(knox_triples.SectionTriple(content.title, sec.header))
+    if manual.sections:
+        for sec in manual.sections:
+            triples.append(knox_triples.SectionTriple(manual.title, sec.header))
 
     return triples
 
 
-def generate_triples_for_sections(content: Content):
+def generate_triples_for_sections(manual: Manual):
     triples = []
 
-    if content.sections:
-        for sec in content.sections:
+    if manual.sections:
+        for sec in manual.sections:
 
             if __has_header_and_page(sec):
-                triples.append(knox_triples.PageTriple(content.title, sec.page))
-                triples.append(knox_triples.PageInSectionTriple(content.title, sec.page, sec.header))
+                triples.append(knox_triples.PageTriple(manual.title, sec.page))
+                triples.append(knox_triples.PageInSectionTriple(manual.title, sec.page, sec.header))
 
     return triples
 

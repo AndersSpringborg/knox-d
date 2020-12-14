@@ -1,10 +1,7 @@
-from datetime import datetime
-
 import pytest
 from io import StringIO
-from loader.file_loader import load_json_file_into_content_object, load_json
+from loader.file_loader import load_json
 import json
-from pathlib import Path
 
 from resources.json_wrapper import recursive_parse_section
 
@@ -34,7 +31,7 @@ class TestLoader:
             load_json(empty_file_path)
 
     def test_assign_correct_publisher_to_content(self):
-        fake_file = StringIO('{"content": {"publisher": "some_publisher"}}')
+        fake_file = StringIO('{"content": {"published_by": "some_publisher"}}')
         expected = "some_publisher"
 
         result = load_json(fake_file)
@@ -43,7 +40,7 @@ class TestLoader:
 
     def test_assign_correct_published_at_to_content(self):
         # Arrange
-        fake_file = StringIO('{"content": {"publishedAt": "2020-23-07"}}')
+        fake_file = StringIO('{"content": {"published_at": "2020-23-07"}}')
         expected = '2020-23-07'
 
         # Act
