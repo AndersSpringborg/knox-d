@@ -1,7 +1,10 @@
+import json
 import os.path
+from io import StringIO
 
+from loader.file_loader import load_json
 from resources import knox_triples
-from resources.json_wrapper import Content
+from resources.json_wrapper import Manual
 from word_embedding.token import Token
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from word_embedding.dependency import Dependency
@@ -24,8 +27,8 @@ class TestKnowledgeGraph:
     def xtest_creates_csv_file_in_correct_folder(self):
         # Arrange
         sentences = []
-        content = Content()
-        kg_info = KnowledgeGraphInfo(sentences, content)
+        manual = Manual()
+        kg_info = KnowledgeGraphInfo(sentences, manual)
 
         # Act
         self.kg.generate_triples(kg_info)
@@ -41,9 +44,9 @@ class TestKnowledgeGraph:
                      Token('develop', dep=Dependency.root),
                      Token('well', dep=Dependency.obj)]]
 
-        content = Content()
+        manual = Manual()
 
-        kg_info = KnowledgeGraphInfo(sentence, content)
+        kg_info = KnowledgeGraphInfo(sentence, manual)
 
         # Act
         self.kg.generate_triples(kg_info)
@@ -68,9 +71,9 @@ class TestKnowledgeGraph:
                       Token('hates', dep=Dependency.root),
                       Token('computerspil', dep=Dependency.obj)]]
 
-        content = Content()
+        manual = Manual()
 
-        kg_info = KnowledgeGraphInfo(sentences, content)
+        kg_info = KnowledgeGraphInfo(sentences, manual)
 
         # Act
         self.kg.generate_triples(kg_info)
@@ -80,10 +83,12 @@ class TestKnowledgeGraph:
         assert isinstance(result, list)
         assert len(result) == 4
 
+    # 0 metadata
+    # 1 title
     def test_generate_triple_for_publisher(self):
         # Arrange
         data = {
-            "publisher": "some_publisher",
+            "published_by": "some_publisher",
             "title": "manual123"
         }
         self.__setup_data_in_kg(data)
@@ -98,9 +103,9 @@ class TestKnowledgeGraph:
 
     def test_generate_triple_for_published_at(self):
         data = {
-            "publisher": "some_publisher",
+            "published_by": "some_publisher",
             "title": "manual123",
-            "publishedAt": "2020-11-13"
+            "published_at": "2020-11-13"
         }
 
         self.__setup_data_in_kg(data)
@@ -114,9 +119,9 @@ class TestKnowledgeGraph:
 
     def test_generate_triple_for_title(self):
         data = {
-            "publisher": "grundfos",
+            "published_by": "grundfos",
             "title": "manual1337",
-            "publishedAt": "2020-11-14"
+            "published_at": "2020-11-14"
         }
 
         self.__setup_data_in_kg(data)
@@ -169,6 +174,7 @@ class TestKnowledgeGraph:
         self.__setup_data_in_kg(data)
 
     def __setup_data_in_kg(self, data):
-        content = Content(data)
+        new_data = {'content': data}
+        manual = load_json(StringIO(json.dumps(new_data)))
         sentences = []
-        self.kg.generate_triples(KnowledgeGraphInfo(sentences, content))
+        self.kg.generate_triples(KnowledgeGraphInfo(sentences, manual))
