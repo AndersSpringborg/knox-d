@@ -28,8 +28,8 @@ def generate_triples_for_manual(content: Content):
 
     if content.sections:
         for sec in content.sections:
-            section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header,
-                                                          sub_uris=["manual", content.title, "section"])
+            section_uri = rdf_helper \
+                .generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header, sub_uris=["manual", content.title, "section"])
             triples.append(knox_triples.SectionTriple(section_uri, sec.header))
 
     return triples
@@ -40,7 +40,8 @@ def generate_triples_for_sections(content: Content):
 
     if content.sections:
         for sec in content.sections:
-            section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header, sub_uris=["manual", content.title, "section"])
+            section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header,
+                                                          sub_uris=["manual", content.title, "section"])
             if __has_header_and_page(sec):
                 page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.page,
                                                            sub_uris=["manual", content.title, "section", "page"])

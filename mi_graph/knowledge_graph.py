@@ -1,4 +1,5 @@
 import os
+import pprint
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -27,8 +28,10 @@ class KnowledgeGraph:
         and the metadata extracted from a Content object
         """
 
-        self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_metadata(kg_info.content))
-        self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_sentences(kg_info.sentences))
+        self.knowledge_graph_triples.extend(
+            triple_generation.generate_triples_for_metadata(kg_info.content))
+        self.knowledge_graph_triples.extend(
+            triple_generation.generate_triples_for_sentences(kg_info.sentences))
 
     def show_graph(self):
         """
@@ -47,18 +50,17 @@ class KnowledgeGraph:
         plt.show()
 
     def __create_branches_from_triples(self):
-        df = pd.DataFrame(columns=["subject", "relation", "object"])
+        data_frame = pd.DataFrame(columns=["subject", "relation", "object"])
         for triple in self.knowledge_graph_triples:
             try:
-                df = df.append(
+                data_frame = data_frame.append(
                     pd.DataFrame(
                         {'subject': [triple.subj_()], 'relation': [triple.rel_()], 'object': [triple.obj_()]}))
             except KeyError as error:
                 print(error)
-        return df
+        return data_frame
 
     def pretty_print_graph(self):
-        import pprint
         for triple in self.knowledge_graph_triples:
             pprint.pprint(triple.parse())
 
@@ -93,7 +95,7 @@ class KnowledgeGraph:
         for triple in self.knowledge_graph_triples:
             try:
                 data += repr(triple) + " .\n"
-            except KeyError as error:
+            except KeyError:
                 pass
         return data
 
