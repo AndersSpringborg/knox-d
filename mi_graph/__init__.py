@@ -42,7 +42,7 @@ def make_path(path):
 def extract_all_text_from_paragraphs(data: Content):
     text: str = ''
     for sec in data.sections:
-        for para in sec.paragraphs:
+        for para in sec.paragraph:
             text += para.text
     return text
 
