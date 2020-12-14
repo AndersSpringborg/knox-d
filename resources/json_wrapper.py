@@ -1,8 +1,13 @@
-from datetime import datetime
 from typing import List
 
 
 class Manual:
+    """
+    The data structure for the manual.
+    This is the only one that should be used in the rest of the project
+
+    """
+
     def __init__(self, title='', publisher='', published_at='', sections=''):
         self.title: str = title
         self.published_by: str = publisher
@@ -80,5 +85,4 @@ def recursive_parse_section(data: {}) -> []:
 
         return array_of_sections
 
-    else:
-        return []
+    return []
