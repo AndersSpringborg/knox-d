@@ -1,9 +1,5 @@
-import pytest
-import pandas as pd
 import os.path
-from pandas._testing import assert_frame_equal
 
-from rdf_parser import rdf_helper
 from resources import knox_triples
 from resources.json_wrapper import Content
 from word_embedding.token import Token
@@ -171,83 +167,6 @@ class TestKnowledgeGraph:
         }
 
         self.__setup_data_in_kg(data)
-
-    # def test_generate_triple_for_multiple_header_and_page_pairs(self):
-    #     triple = Triple('manual', 'contains', 'some_header')
-    #     triple2 = Triple('manual', 'contains', 'some_header2')
-    #     triple3 = Triple('some_header', 'isAt', 'some_page')
-    #     triple4 = Triple('some_header2', 'isAt', 'some_page2')
-    #
-    #     expected = pd.DataFrame(columns=['subject', 'relation', 'object'])
-    #
-    #     expected = expected.append(
-    #         pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]}),
-    #         ignore_index=True)
-    #
-    #     expected = expected.append(
-    #         pd.DataFrame({'subject': [triple2.subj], 'relation': [triple2.rel], 'object': [triple2.obj]}),
-    #         ignore_index=True)
-    #
-    #     expected = expected.append(
-    #         pd.DataFrame({'subject': [triple3.subj], 'relation': [triple3.rel], 'object': [triple3.obj]}),
-    #         ignore_index=True)
-    #
-    #     expected = expected.append(
-    #         pd.DataFrame({'subject': [triple4.subj], 'relation': [triple4.rel], 'object': [triple4.obj]}),
-    #         ignore_index=True)
-    #
-    #     data = {
-    #         "sections": {
-    #             "items": [
-    #                 {
-    #                     "properties": {
-    #                         "page": "some_page",
-    #                         "header": "some_header"
-    #                     }
-    #
-    #                 },
-    #                 {
-    #                     "properties": {
-    #                         "page": "some_page2",
-    #                         "header": "some_header2"
-    #                     }
-    #
-    #                 }
-    #             ]
-    #         }
-    #     }
-    #
-    #     content = Content(data)
-    #
-    #     sentences = []
-    #     kg_info = KnowledgeGraphInfo(sentences, content)
-    #
-    #     self.kg.generate_triples(kg_info)
-    #     result = pd.read_csv(self.database_filepath)
-    #
-    #     assert_frame_equal(result, expected)
-    #
-    # def test_generate_triples_if_only_title_and_publisher(self):
-    #     triple = Triple('manual', 'publishedBy', 'Grundfos')
-    #     triple2 = Triple('manual', 'describes', "ALPHA1")
-    #
-    #     expected = pd.DataFrame({'subject': [triple.subj], 'relation': [triple.rel], 'object': [triple.obj]})
-    #     expected = expected.append(
-    #         pd.DataFrame({'subject': [triple2.subj], 'relation': [triple2.rel], 'object': [triple2.obj]}),
-    #         ignore_index=True)
-    #
-    #     dict = {
-    #         "publisher": "Grundfos",
-    #         "title": "ALPHA1"
-    #     }
-    #
-    #     content = Content(dict)
-    #     sentences = []
-    #     kg_info = KnowledgeGraphInfo(sentences, content)
-    #     self.kg.generate_triples(kg_info)
-    #     result = pd.read_csv(self.database_filepath)
-    #
-    #     assert_frame_equal(result, expected)
 
     def __setup_data_in_kg(self, data):
         content = Content(data)

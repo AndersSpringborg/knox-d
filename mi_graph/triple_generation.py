@@ -1,4 +1,3 @@
-from rdf_parser import rdf_helper, GRUNDFOS
 from resources import knox_triples
 from resources.json_wrapper import Content, Section
 from word_embedding.dependency import Dependency
@@ -28,9 +27,7 @@ def generate_triples_for_manual(content: Content):
 
     if content.sections:
         for sec in content.sections:
-            section_uri = rdf_helper \
-                .generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header, sub_uris=["manual", content.title, "section"])
-            triples.append(knox_triples.SectionTriple(section_uri, sec.header))
+            triples.append(knox_triples.SectionTriple(content.title, sec.header))
 
     return triples
 
@@ -40,13 +37,10 @@ def generate_triples_for_sections(content: Content):
 
     if content.sections:
         for sec in content.sections:
-            section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.header,
-                                                          sub_uris=["manual", content.title, "section"])
+
             if __has_header_and_page(sec):
-                page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=sec.page,
-                                                           sub_uris=["manual", content.title, "section", "page"])
-                triples.append(knox_triples.PageTriple(page_uri, sec.page))
-                triples.append(knox_triples.PageInSectionTriple(page_uri, section_uri))
+                triples.append(knox_triples.PageTriple(content.title, sec.page))
+                triples.append(knox_triples.PageInSectionTriple(content.title, sec.page, sec.header))
 
     return triples
 
