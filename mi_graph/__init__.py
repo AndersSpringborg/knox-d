@@ -9,8 +9,7 @@ from preprocess.cleaner_imp import CleanerImp
 from word_embedding.spacy_model import SpacyModel
 from mi_graph.knowledge_graph import KnowledgeGraph
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
-from resources.json_wrapper import Content
-from resources.random_number_gen import random_percentage_count
+from resources.json_wrapper import Manual
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
@@ -40,7 +39,7 @@ def make_path(path):
     return path
 
 
-def extract_all_text_from_paragraphs(data: Content):
+def extract_all_text_from_paragraphs(data: Manual):
     text: str = ''
     for sec in data.sections:
         text += sec.paragraph.text
@@ -72,18 +71,16 @@ def cli():
 
     # Load json file into data structures (Content, Section, Paragraph)
     print("Loading input JSON file into structures...")
-    random_percentage_count()
 
-    input_file = open(path_to_file)
-    content: Content = load_json(input_file)
-    print("...Loading done\n\n")
+    input_file = open(path_to_file, encoding='utf-16')
+    manual: Manual = load_json(input_file)
+    print("...Loading done")
 
     # Extract corpus
-    corpus = extract_all_text_from_paragraphs(content)
+    corpus = extract_all_text_from_paragraphs(manual)
 
     # Preprocess the paragraphs in the json file
     print("Cleaning the JSON file")
-    random_percentage_count()
     cleaner = CleanerImp()
 
     corpus = cleaner.remove_special_characters(corpus)
@@ -92,38 +89,35 @@ def cli():
     corpus = cleaner.bigrams(corpus)
     corpus = cleaner.to_lower(corpus)
 
-    print("...Cleaning done\n\n")
+    print("...Cleaning done")
 
     # Instantiate model, load corpus into model and extract tokens
     print("Instantiating the word embedding model...")
-    random_percentage_count()
     model = SpacyModel()
 
     model.load(corpus)
 
     tokens = model.tokens()
-    print("...Instantiating done\n\n")
+    print("...Instantiating done")
 
     # Instantiate knowledge graph information
     print("Loading knowledge graph data...")
-    random_percentage_count()
 
-    kg_info = KnowledgeGraphInfo(tokens, content)
+    kg_info = KnowledgeGraphInfo(tokens, manual)
 
-    print("...Loading done\n\n")
+    print("...Loading done")
 
     # Instantiate knowledge graph and create triples
     print("Instantiating knowledge graph...")
-    random_percentage_count()
-    knowledge_graph = KnowledgeGraph()
+    know_graph = KnowledgeGraph()
 
-    knowledge_graph.generate_triples(kg_info)
+    know_graph.generate_triples(kg_info)
 
-    knowledge_graph.save_to_database()
-    print("...Instantiating done\n\n")
+    know_graph.save_to_database()
+    print("...Instantiating done")
 
     # If --visualisation" or "-v" in args
     if args.visualisation:
         print("Rendering knowledge graph in new window...")
-        knowledge_graph.show_graph()
-        print("...Visualization closed\n\n")
+        know_graph.show_graph()
+        print("...Visualization closed")
