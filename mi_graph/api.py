@@ -16,18 +16,16 @@ def start_api():
 @app.route('/api/manuals', methods=['POST'])
 def process_manual():
     manual = create_manual_from_request(request.json)
-    pipeline.run(manual)
-    return {"lol": "du er grim"}
-    # try:
-    #     pipeline.run(manual)
-    # except Exception as error:
-    #     return Response(response=str(error),
-    #                     status=400,
-    #                     content_type='application/json')
-    #
-    # return Response(response=json.dumps({"success": True}),
-    #                 status=201,
-    #                 content_type='application/json')
+    try:
+        pipeline.run(manual)
+    except Exception as error:
+        return Response(response=str(error),
+                        status=400,
+                        content_type='application/json')
+
+    return Response(response=json.dumps({"success": True}),
+                    status=201,
+                    content_type='application/json')
 
 
 def create_manual_from_request(json_data):
