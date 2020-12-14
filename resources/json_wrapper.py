@@ -6,7 +6,7 @@ class Manual:
     def __init__(self, title='', publisher='', published_at='', sections=''):
         self.title: str = title
         self.published_by: str = publisher
-        self.published_at: datetime = published_at
+        self.published_at: str = published_at
         self.sections: [] = sections
 
 
@@ -55,7 +55,7 @@ class Content:
             self.publisher = data.get("publisher")
 
             if publish_date := data.get("publishedAt"):
-                self.published_at = datetime.strptime(publish_date, "%Y-%d-%m")
+                self.published_at = publish_date
 
             self.title = data.get("title")
 

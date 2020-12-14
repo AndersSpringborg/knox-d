@@ -44,7 +44,7 @@ class TestLoader:
     def test_assign_correct_published_at_to_content(self):
         # Arrange
         fake_file = StringIO('{"content": {"publishedAt": "2020-23-07"}}')
-        expected = datetime(2020, day=23, month=7)
+        expected = '2020-23-07'
 
         # Act
         result = load_json(fake_file)

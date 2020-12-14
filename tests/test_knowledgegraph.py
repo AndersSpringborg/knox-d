@@ -10,7 +10,7 @@ from word_embedding.token import Token
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from word_embedding.dependency import Dependency
 
-from knowledge_graph.knowledge_graph import KnowledgeGraph
+from mi_graph.knowledge_graph import KnowledgeGraph
 
 
 class TestKnowledgeGraph:
@@ -134,16 +134,9 @@ class TestKnowledgeGraph:
     def test_generate_triple_for_section(self):
         data = {
             "title": "manual123",
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "header": "some_header"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [{
+                "header": "some_header"
+            }]
         }
 
         self.__setup_data_in_kg(data)
@@ -152,22 +145,14 @@ class TestKnowledgeGraph:
 
     def test_generate_triples_for_multiple_sections(self):
         data = {
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "header": "some_header"
-                        }
-
-                    },
-                    {
-                        "properties": {
-                            "header": "some_header2"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [
+                {
+                    "header": "some_header"
+                },
+                {
+                    "header": "some_header2"
+                }
+            ]
         }
 
         self.__setup_data_in_kg(data)
@@ -178,17 +163,10 @@ class TestKnowledgeGraph:
 
     def test_generate_triple_for_header_and_page(self):
         data = {
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "page": "some_page",
-                            "header": "some_header"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [{
+                "page": "some_page",
+                "header": "some_header"
+            }]
         }
 
         self.__setup_data_in_kg(data)

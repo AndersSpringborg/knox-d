@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from loader.file_loader import load_json
 from preprocess.cleaner_imp import CleanerImp
 from word_embedding.spacy_model import SpacyModel
-from knowledge_graph.knowledge_graph import KnowledgeGraph
+from mi_graph.knowledge_graph import KnowledgeGraph
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 from resources.json_wrapper import Content
 from resources.random_number_gen import random_percentage_count
