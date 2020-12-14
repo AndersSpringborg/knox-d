@@ -1,5 +1,5 @@
-from rdflib import Graph, Literal, RDF, URIRef, BNode
-from rdflib.namespace import XSD, RDFS, ClosedNamespace, OWL
+from rdflib import Graph, RDF
+from rdflib.namespace import RDFS, OWL
 
 from rdf_parser import GRUNDFOS
 from resources.error import error
