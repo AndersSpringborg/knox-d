@@ -80,14 +80,12 @@ class KnowledgeGraph:
     def save_to_database(self):
         data = self.__generate_data()
 
-
         self.__update_triples(data)
         self.__commit_triples()
 
     def __update_triples(self, data):
         # Remember: ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
         update_url = 'http://127.0.0.1:8080/update/'
-        commit_url = 'http://127.0.0.1:8080/commit/'
 
         update_header: dict = {'content-type':
                                    'application/json; charset=utf-8'}
@@ -96,10 +94,9 @@ class KnowledgeGraph:
                                  headers=update_header)
         self.__print_response(response)
 
-
     def __commit_triples(self):
         commit_url = 'http://127.0.0.1:8080/commit/'
-        
+
         response = requests.post(commit_url)
         self.__print_response(response)
 

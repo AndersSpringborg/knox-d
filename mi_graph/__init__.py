@@ -14,7 +14,6 @@ from resources.random_number_gen import random_percentage_count
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
-
     _parser.prog = "mi-graph"
 
     _parser.add_argument("file", help="Please indicate the json file you want to process.")
@@ -74,7 +73,7 @@ def cli():
     # Load json file into data structures (Content, Section, Paragraph)
     print("Loading input JSON file into structures...")
     random_percentage_count()
-    
+
     input_file = open(path_to_file)
     content: Content = load_json(input_file)
     print("...Loading done\n\n")
@@ -86,13 +85,13 @@ def cli():
     print("Cleaning the JSON file")
     random_percentage_count()
     cleaner = CleanerImp()
-    
+
     corpus = cleaner.remove_special_characters(corpus)
     corpus = cleaner.numbers_to_text(corpus)
     corpus = cleaner.lemmatize(corpus)
     corpus = cleaner.bigrams(corpus)
     corpus = cleaner.to_lower(corpus)
-    
+
     print("...Cleaning done\n\n")
 
     # Instantiate model, load corpus into model and extract tokens
@@ -117,7 +116,7 @@ def cli():
     print("Instantiating knowledge graph...")
     random_percentage_count()
     knowledge_graph = KnowledgeGraph()
-    
+
     knowledge_graph.generate_triples(kg_info)
 
     knowledge_graph.save_to_database()
