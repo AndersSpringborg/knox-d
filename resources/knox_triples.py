@@ -1,23 +1,15 @@
 from abc import ABC
 
-from rdflib.term import Node
+from rdflib.term import Node, URIRef
 
-from rdf_parser.literal_type import LiteralType
-from rdf_parser.rdf_parser import RdfParser
+from rdf_parser import rdf_helper, GRUNDFOS
 
 
+# TODO: Implement "to_string()" method
 class Triple(ABC):
     """
     Data-structure for the relation data (subject, object, relation), used with the knowledge graph
     """
-    subj = ''
-    obj = ''
-    rel = ''
-
-    def __init__(self, _subj, _rel, _obj):
-        self.subj = _subj
-        self.obj = _obj
-        self.rel = _rel
 
     def subj_(self) -> Node:
         pass
@@ -29,18 +21,45 @@ class Triple(ABC):
         pass
 
     def parse(self):
-        return (self.subj_(), self.obj_(), self.rel_())
+        return self.subj_(), self.rel_(), self.obj_()
 
     def term(self, namespace, term):
-        return RdfParser.get_term(namespace, term)
+        return rdf_helper.get_term(namespace, term)
 
-    def literal(self, string, type):
-        return RdfParser.generate_rdf_literal(string, type)
+    def literal(self, string: str, literal_type: str):
+        return rdf_helper.generate_rdf_literal(string, literal_type)
+
+    def blank_node(self, string: str):
+        return rdf_helper.generate_rdf_blank_node(string)
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "<" + str(self.obj_()) + ">"
+
+
+class StringTriple(Triple):
+    def __init__(self, _subj: str, _rel: str, _obj: str):
+        self.subj = _subj
+        self.obj = _obj
+        self.rel = _rel
 
 
 class MetaDataTriple(Triple):
     def __init__(self, title):
-        self.manual_uri = RdfParser.generate_rdf_uri_ref(ref=title, sub_uris=["manual"])
+        self.manual_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
+                                                          ref=title,
+                                                          sub_uris=["manual"])
+
+    def subj_(self):
+        return self.manual_uri
+
+    def rel_(self):
+        return self.term("rdf", "type")
+
+    def obj_(self):
+        return self.term("grundfos", "Manual")
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "<" + str(self.obj_()) + ">"
 
 
 class PublishTriple(MetaDataTriple):
@@ -52,25 +71,28 @@ class PublishTriple(MetaDataTriple):
         return self.manual_uri
 
     def rel_(self):
-        return self.term("grundfos", "publishedBy")
+        return self.term("grundfos", "isPublishedBy")
 
     def obj_(self):
-        return self.literal(self.publisher, LiteralType.STRING)
+        return self.literal(self.publisher, "string")
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "\"" + str(self.obj_()) + "\""
 
 
 class PublishedAtTriple(PublishTriple):
-    def __init__(self, published_at: str, title):
+    def __init__(self, title: str, published_at: str):
         super().__init__(title)
-        self.publishedAt = published_at
+        self.published_at = published_at
 
     def subj_(self):
         return super().subj_()
 
     def rel_(self):
-        return self.literal(self.publishedAt, LiteralType.DATE)
+        return self.term("grundfos", "isPublishedAt")
 
     def obj_(self):
-        return self.term("grundfos", "publishedAt")
+        return self.literal(self.published_at, "date")
 
 
 class TitleTriple(MetaDataTriple):
@@ -85,4 +107,72 @@ class TitleTriple(MetaDataTriple):
         return self.term("grundfos", "Title")
 
     def obj_(self):
-        return self.literal(self.title, LiteralType.STRING)
+        return self.literal(self.title, "date")
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "\"" + str(self.obj_()) + "\""
+
+
+class SectionTriple(Triple):
+    def __init__(self, section_uri, section_title):
+        self.section_uri = section_uri
+        self.section_title = section_title
+
+    def subj_(self):
+        return self.section_uri
+
+    def rel_(self):
+        return self.term("rdf", "type")
+
+    def obj_(self):
+        return self.term("grundfos", "Section")
+
+
+class PageTriple(Triple):
+    def __init__(self, page_uri, page_number):
+        self.page_uri = page_uri
+        self.page_number = page_number
+
+    def subj_(self):
+        return self.page_uri
+
+    def rel_(self):
+        return self.term("rdf", "type")
+
+    def obj_(self):
+        return self.term("grundfos", "Page")
+
+
+class PageInSectionTriple(Triple):
+    def __init__(self, page_uri, section_uri):
+        self.page_uri = page_uri
+        self.section_uri = section_uri
+
+    def subj_(self):
+        return self.page_uri
+
+    def rel_(self):
+        return self.term("grundfos", "isInSection")
+
+    def obj_(self):
+        return self.section_uri
+
+
+class SentenceTriple(Triple):
+    def __init__(self, subj, rel, obj):
+        self.subj = subj
+        self.rel = rel
+        self.obj = obj
+
+    def subj_(self):
+        return self.term("grundfos", self.subj)
+
+    def rel_(self):
+        return self.term("grundfos", self.rel)
+
+    def obj_(self):
+        try:
+            term = self.term("grundfos", self.obj)
+        except Exception:
+            term = self.blank_node(self.obj)
+        return term
