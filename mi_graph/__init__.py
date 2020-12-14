@@ -14,7 +14,9 @@ from resources.random_number_gen import random_percentage_count
 
 
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
+
     _parser.prog = "mi-graph"
+
     _parser.add_argument("file", help="Please indicate the json file you want to process.")
 
     _parser.add_argument("--visualisation", "-v", action="store_true", default=False,
@@ -42,8 +44,7 @@ def make_path(path):
 def extract_all_text_from_paragraphs(data: Content):
     text: str = ''
     for sec in data.sections:
-        for para in sec.paragraphs:
-            text += para.text
+        text += sec.paragraph.text
     return text
 
 
@@ -73,6 +74,7 @@ def cli():
     # Load json file into data structures (Content, Section, Paragraph)
     print("Loading input JSON file into structures...")
     random_percentage_count()
+    
     input_file = open(path_to_file)
     content: Content = load_json(input_file)
     print("...Loading done\n\n")
@@ -84,32 +86,40 @@ def cli():
     print("Cleaning the JSON file")
     random_percentage_count()
     cleaner = CleanerImp()
+    
     corpus = cleaner.remove_special_characters(corpus)
     corpus = cleaner.numbers_to_text(corpus)
     corpus = cleaner.lemmatize(corpus)
     corpus = cleaner.bigrams(corpus)
     corpus = cleaner.to_lower(corpus)
+    
     print("...Cleaning done\n\n")
 
     # Instantiate model, load corpus into model and extract tokens
     print("Instantiating the word embedding model...")
     random_percentage_count()
     model = SpacyModel()
+
     model.load(corpus)
+
     tokens = model.tokens()
     print("...Instantiating done\n\n")
 
     # Instantiate knowledge graph information
     print("Loading knowledge graph data...")
     random_percentage_count()
+
     kg_info = KnowledgeGraphInfo(tokens, content)
+
     print("...Loading done\n\n")
 
     # Instantiate knowledge graph and create triples
     print("Instantiating knowledge graph...")
     random_percentage_count()
     knowledge_graph = KnowledgeGraph()
+    
     knowledge_graph.generate_triples(kg_info)
+
     knowledge_graph.save_to_database()
     print("...Instantiating done\n\n")
 

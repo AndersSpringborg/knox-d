@@ -1,4 +1,6 @@
 import os
+
+import pprint
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -26,8 +28,11 @@ class KnowledgeGraph:
         Generates knox_triples (subj, rel, obj) from the text which has been natural language processed
         and the metadata extracted from a Content object
         """
-        self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_metadata(kg_info.content))
-        self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_sentences(kg_info.sentences))
+
+        self.knowledge_graph_triples.extend(
+            triple_generation.generate_triples_for_metadata(kg_info.content))
+        self.knowledge_graph_triples.extend(
+            triple_generation.generate_triples_for_sentences(kg_info.sentences))
 
     def show_graph(self):
         """
@@ -46,18 +51,19 @@ class KnowledgeGraph:
         plt.show()
 
     def __create_branches_from_triples(self):
-        df = pd.DataFrame(columns=["subject", "relation", "object"])
+
+        data_frame = pd.DataFrame(columns=["subject", "relation", "object"])
         for triple in self.knowledge_graph_triples:
             try:
-                df = df.append(
+                data_frame = data_frame.append(
                     pd.DataFrame(
                         {'subject': [triple.subj_()], 'relation': [triple.rel_()], 'object': [triple.obj_()]}))
             except KeyError as error:
                 print(error)
-        return df
+
+        return data_frame
 
     def pretty_print_graph(self):
-        import pprint
         for triple in self.knowledge_graph_triples:
             pprint.pprint(triple.parse())
 
@@ -74,11 +80,15 @@ class KnowledgeGraph:
     def save_to_database(self):
         data = self.__generate_data()
 
+
         self.__update_triples(data)
         self.__commit_triples()
 
     def __update_triples(self, data):
+        # Remember: ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
         update_url = 'http://127.0.0.1:8080/update/'
+        commit_url = 'http://127.0.0.1:8080/commit/'
+
         update_header: dict = {'content-type':
                                    'application/json; charset=utf-8'}
         response = requests.post(update_url,
@@ -86,9 +96,10 @@ class KnowledgeGraph:
                                  headers=update_header)
         self.__print_response(response)
 
+
     def __commit_triples(self):
         commit_url = 'http://127.0.0.1:8080/commit/'
-
+        
         response = requests.post(commit_url)
         self.__print_response(response)
 
@@ -97,7 +108,7 @@ class KnowledgeGraph:
         for triple in self.knowledge_graph_triples:
             try:
                 data += repr(triple) + " .\n"
-            except KeyError as error:
+            except KeyError:
                 pass
         return data
 

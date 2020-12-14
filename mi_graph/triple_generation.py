@@ -38,9 +38,11 @@ def generate_triples_for_sections(content: Content):
 
     if content.sections:
         for sec in content.sections:
+
             if __has_header_and_page(sec):
                 triples.append(knox_triples.PageTriple(content.title, sec.page))
                 triples.append(knox_triples.PageInSectionTriple(content.title, sec.page, sec.header))
+
 
     return triples
 

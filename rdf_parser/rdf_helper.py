@@ -1,5 +1,4 @@
 from rdflib import RDF, RDFS, OWL, XSD, BNode, URIRef, Literal
-from rdflib.term import Node
 
 from rdf_parser import GRUNDFOS
 from resources.error import error
@@ -28,16 +27,16 @@ def get_term(namespace, term):
     """
     if namespace == "rdf":
         return RDF.term(term)
-    elif namespace == "rdfs":
+    if namespace == "rdfs":
         return RDFS.term(term)
-    elif namespace == "owl":
+    if namespace == "owl":
         return OWL.term(term)
-    elif namespace == "xsd":
+    if namespace == "xsd":
         return XSD.term(term)
-    elif namespace == "grundfos":
+    if namespace == "grundfos":
         return GRUNDFOS.term(term)
-    else:
-        raise Exception("Namespace not found")
+
+    raise Exception("Namespace not found")
 
 
 def generate_rdf_blank_node(value=None):
@@ -91,16 +90,22 @@ def generate_rdf_uri_ref(namespace_base, ref, sub_uris: list):
 
 def generate_rdf_literal(value: str, literal_type: str) -> Literal:
     if value in "" or value is None:
-        error(" Empty value in rdf literal is not supported")
-        raise RdfHelperException
+        error("Empty value in rdf literal is not supported")
+        raise RdfHelperException()
 
     if literal_type in "string":
         return Literal(value.replace(" ", "_"), datatype=XSD.string)
-    elif literal_type in "date":
+
+    if literal_type in "date":
         return Literal(value, datatype=XSD.date)
-    elif literal_type in "integer":
+
+    if literal_type in "integer":
         return Literal(value, datatype=XSD.int)
+
+    raise TypeError()
 
 
 class RdfHelperException(Exception):
-    pass
+    """
+    wrapper to rdf exception, so we don't depend on that library
+    """

@@ -15,4 +15,6 @@ disable=
 
 ignore=tests
 
+[FORMAT]
+max-line-length=120
 

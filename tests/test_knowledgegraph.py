@@ -20,7 +20,8 @@ class TestKnowledgeGraph:
         if os.path.isfile("test_files/testfile.csv"):
             os.remove("test_files/testfile.csv")
 
-    def test_creates_csv_file_in_correct_folder(self):
+    # Reafactor to send to database, instead of saving to csv file
+    def xtest_creates_csv_file_in_correct_folder(self):
         # Arrange
         sentences = []
         content = Content()
@@ -130,16 +131,9 @@ class TestKnowledgeGraph:
     def test_generate_triple_for_section(self):
         data = {
             "title": "manual123",
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "header": "some_header"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [{
+                "header": "some_header"
+            }]
         }
 
         self.__setup_data_in_kg(data)
@@ -148,22 +142,14 @@ class TestKnowledgeGraph:
 
     def test_generate_triples_for_multiple_sections(self):
         data = {
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "header": "some_header"
-                        }
-
-                    },
-                    {
-                        "properties": {
-                            "header": "some_header2"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [
+                {
+                    "header": "some_header"
+                },
+                {
+                    "header": "some_header2"
+                }
+            ]
         }
 
         self.__setup_data_in_kg(data)
@@ -174,17 +160,10 @@ class TestKnowledgeGraph:
 
     def test_generate_triple_for_header_and_page(self):
         data = {
-            "sections": {
-                "items": [
-                    {
-                        "properties": {
-                            "page": "some_page",
-                            "header": "some_header"
-                        }
-
-                    }
-                ]
-            }
+            "sections": [{
+                "page": "some_page",
+                "header": "some_header"
+            }]
         }
 
         self.__setup_data_in_kg(data)

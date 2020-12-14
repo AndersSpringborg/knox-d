@@ -1,11 +1,10 @@
 from abc import ABC
 
-from rdflib.term import Node, URIRef
+from rdflib.term import Node
 
 from rdf_parser import rdf_helper, GRUNDFOS
 
 
-# TODO: Implement "to_string()" method
 class Triple(ABC):
     """
     Data-structure for the relation data (subject, object, relation), used with the knowledge graph
@@ -37,6 +36,10 @@ class Triple(ABC):
 
 
 class StringTriple(Triple):
+    """
+    A triple where everything is strings
+    """
+
     def __init__(self, _subj: str, _rel: str, _obj: str):
         self.subj = _subj
         self.obj = _obj
@@ -44,6 +47,10 @@ class StringTriple(Triple):
 
 
 class MetaDataTriple(Triple):
+    """
+    The default triple for metadata
+    """
+
     def __init__(self, title):
         self.manual_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
                                                           ref=title,
@@ -63,6 +70,10 @@ class MetaDataTriple(Triple):
 
 
 class PublishTriple(MetaDataTriple):
+    """
+    Define about the publisher of an article
+    """
+
     def __init__(self, title: str, publisher: str = ''):
         super().__init__(title)
         self.publisher = publisher
@@ -81,12 +92,13 @@ class PublishTriple(MetaDataTriple):
 
 
 class PublishedAtTriple(PublishTriple):
+    """
+    Define when a article is published
+    """
+
     def __init__(self, title: str, published_at: str):
         super().__init__(title)
         self.published_at = published_at
-
-    def subj_(self):
-        return super().subj_()
 
     def rel_(self):
         return self.term("grundfos", "isPublishedAt")
@@ -96,12 +108,13 @@ class PublishedAtTriple(PublishTriple):
 
 
 class TitleTriple(MetaDataTriple):
+    """
+    Define a title of a manual
+    """
+
     def __init__(self, title):
         super().__init__(title)
         self.title = title
-
-    def subj_(self):
-        return super().subj_()
 
     def rel_(self):
         return self.term("grundfos", "Title")
@@ -114,9 +127,13 @@ class TitleTriple(MetaDataTriple):
 
 
 class SectionTriple(Triple):
+    """
+    Define a section
+    """
     def __init__(self, content_title, section_title):
         self.section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=section_title,
                                                            sub_uris=["manual", content_title, "section"])
+
         self.section_title = section_title
 
     def subj_(self):
@@ -130,6 +147,9 @@ class SectionTriple(Triple):
 
 
 class PageTriple(Triple):
+    """
+    Define a page
+    """
     def __init__(self, content_title, page_number):
         self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
                                                         ref=page_number,
@@ -147,6 +167,9 @@ class PageTriple(Triple):
 
 
 class PageInSectionTriple(Triple):
+    """
+    Defines a relation between a page and a section
+    """
     def __init__(self, content_title, page_number, section_title):
         self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
                                                         ref=page_number,
@@ -166,6 +189,10 @@ class PageInSectionTriple(Triple):
 
 
 class SentenceTriple(Triple):
+    """
+    Defines triples that extract knowledge from the triple
+    """
+
     def __init__(self, subj, rel, obj):
         self.subj = subj
         self.rel = rel
@@ -180,6 +207,6 @@ class SentenceTriple(Triple):
     def obj_(self):
         try:
             term = self.term("grundfos", self.obj)
-        except Exception:
+        except KeyError:
             term = self.blank_node(self.obj)
         return term
