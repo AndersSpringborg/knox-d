@@ -1,6 +1,6 @@
 from abc import ABC
 
-from rdflib.term import Node, URIRef
+from rdflib.term import Node
 
 from rdf_parser import rdf_helper, GRUNDFOS
 
@@ -100,9 +100,6 @@ class PublishedAtTriple(PublishTriple):
         super().__init__(title)
         self.published_at = published_at
 
-    def subj_(self):
-        return super().subj_()
-
     def rel_(self):
         return self.term("grundfos", "isPublishedAt")
 
@@ -118,9 +115,6 @@ class TitleTriple(MetaDataTriple):
     def __init__(self, title):
         super().__init__(title)
         self.title = title
-
-    def subj_(self):
-        return super().subj_()
 
     def rel_(self):
         return self.term("grundfos", "Title")
@@ -208,6 +202,6 @@ class SentenceTriple(Triple):
     def obj_(self):
         try:
             term = self.term("grundfos", self.obj)
-        except Exception:
+        except KeyError:
             term = self.blank_node(self.obj)
         return term
