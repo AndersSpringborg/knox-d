@@ -1,6 +1,20 @@
 from typing import List
 
 
+class Manual:
+    """
+    The data structure for the manual.
+    This is the only one that should be used in the rest of the project
+
+    """
+
+    def __init__(self, title='', publisher='', published_at='', sections=''):
+        self.title: str = title
+        self.published_by: str = publisher
+        self.published_at: str = published_at
+        self.sections: [] = sections
+
+
 class Paragraph:
     """
     Data-structure for the information stored under
@@ -20,9 +34,6 @@ class Section:
     Data-structure for the information stored under
     each section in the "sections" array in the json file
     """
-    page: str = ''
-    header: str = ''
-    paragraphs: List[Paragraph] = []
 
     def __init__(self, data: dict = None):
         if data:
@@ -30,10 +41,8 @@ class Section:
             self.header = data.get("header", "")
 
             if 'paragraphs' in data.keys():
-                self.paragraphs: List[Paragraph] = []
-                json_paragraphs = data['paragraphs'].get("items", [])
-                for para in json_paragraphs:
-                    self.paragraphs.append(Paragraph(para['properties']))
+                json_paragraph = data.get("paragraphs", "")
+                self.paragraph = Paragraph(json_paragraph)
 
 
 class Content:
@@ -48,15 +57,32 @@ class Content:
     def __init__(self, data: dict = None):
 
         if data:
-            self.publisher = data.get("publisher", "")
+            self.publisher = data.get("publisher")
 
-            self.published_at = data.get("publishedAt", "")
+            if publish_date := data.get("publishedAt"):
+                self.published_at = publish_date
 
-            self.title = data.get("title", "")
+            self.title = data.get("title")
 
             self.sections: List[Section] = []
 
             if 'sections' in data.keys():
-                json_sections = data["sections"].get("items", [])
-                for sec in json_sections:
-                    self.sections.append(Section(sec['properties']))
+                json_sections = recursive_parse_section(data)
+                for section in json_sections:
+                    self.sections.append(Section(section))
+
+
+def recursive_parse_section(data: {}) -> []:
+    if "sections" in data.keys():
+        array_of_sections = data.get('sections')
+        for section in array_of_sections:
+            new_flat_array_of_section = recursive_parse_section(section)
+
+            if "sections" in section.keys():
+                del section['sections']
+
+            array_of_sections = array_of_sections + new_flat_array_of_section
+
+        return array_of_sections
+
+    return []

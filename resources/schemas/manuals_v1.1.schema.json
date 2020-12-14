@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "shcemaLocation": {"type": "string"},
+        "schemaVersion": {"default": "v1.1"},
+        "generator": {
+            "type": "object",
+            "properties": {
+                "app": {"type": "string"},
+                "version": {"type": "string"},
+                "generatedAt": {"type": "string"}
+            },
+            "required": ["app","version"]
+        },
+        "content": {
+            "type": "object",
+            "manual":{"$ref": "#/definitions/manual"}
+        }
+    },
+    "definitions": {
+        "manual" :{
+            "type": "object",
+            "properties": {
+                "publisher": {"type": "string"},
+                "publishedAt": {"type": "string"},
+                "title": {"type": "string"},
+                "sections": {"$ref": "#/definitions/section"},
+                "figures": {"$ref": "#/definitions/figure"},
+                "tables": {"$ref": "#/definitions/table"}
+            },
+            "required": ["sections","title","publisher"]
+        },
+        "section" :{
+            "type": "object",
+            "properties": {
+                "page": { "type": "string"},
+                "header": { "type": "string"},
+                "paragraphs":{"$ref": "#/definitions/paragraph"},
+                "sections": {"$ref": "#/definitions/section"}
+            },
+            "required": ["paragraphs","page"]
+        },
+        "paragraph" :{
+            "type": "object",
+            "properties": {
+                "page": {"type": "string"},
+                "text": {"type": "string"}
+            },
+            "required": ["text", "page"]
+        },
+        "table":{
+            "type":"object",
+            "properties": {
+                "page": {"type": "string"},
+                "value": {"type": "string"}
+            },
+            "required": ["page", "value"]
+        },
+        "figure":{
+            "type":"object",
+            "properties": {
+                "page": {"type": "string"},
+                "value": {"type": "string"}
+            },
+            "required": ["page", "value"]
+        }
+    }
+}

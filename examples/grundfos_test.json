@@ -19,7 +19,7 @@
         "__module__": "knox_source_data_io.models.content",
             "properties": {
                 "publisher": "Grundfos A/S",
-                "publishedAt": "05/11-2020",
+                "publishedAt": "2020-11-05",
                 "title": "SQE",
 
                 "sections": {
@@ -48,6 +48,55 @@
                                                 "page": "5",
                                                 "text": "Submersible well pumps are designed for pumping clear, cold water"
                                             }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Warning Before carrying out maintenance and service on lifting stations used for pumping liquids which might be hazardous to health, make sure that the lifting station has been thoroughly flushed with clean water and that the outlet pipe has been drained"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Rinse the parts in water after dismantling"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Make sure that the isolating valves have been closed"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "The work must be carried out in accordance with local regulations"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Installation and operation must comply with local regulations and accepted codes of good practice"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Warning The lifting eye is only intended for lifting the pump"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "page": "6",
+                                                "text": "Never lift or lower the lifting station by means of the lifting eye"
+                                            }
                                         }
                                     ]
                                 }
@@ -72,7 +121,7 @@
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "page": "5",
+                                                "page": "10",
                                                 "text": "During start-up and operation, the pump must always be completely submerged in water."
                                             }
                                         }

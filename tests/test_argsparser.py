@@ -17,7 +17,7 @@ class TestArgsParser:
     def test_visual_have_help(self):
         helper_msg = self.mi_parser.format_help()
 
-        assert "visualises the graph" in helper_msg
+        assert "visualizes the graph" in helper_msg
 
     def test_visual_default_is_false(self):
         empty_args = [' ']
