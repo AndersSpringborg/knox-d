@@ -4,7 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import requests
 
-from knowledge_graph import triple_generation
+from mi_graph import triple_generation
 from rdf_parser.rdf_parser import RdfParser
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 
