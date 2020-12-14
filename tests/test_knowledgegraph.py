@@ -24,7 +24,8 @@ class TestKnowledgeGraph:
         if os.path.isfile("test_files/testfile.csv"):
             os.remove("test_files/testfile.csv")
 
-    def test_creates_csv_file_in_correct_folder(self):
+    # Reafactor to send to database, instead of saving to csv file
+    def xtest_creates_csv_file_in_correct_folder(self):
         # Arrange
         sentences = []
         content = Content()
