@@ -25,9 +25,8 @@ def load_json(io_stream):
 
 
 def instantiate_content_object(data: dict):
-    con = Content(data["properties"]["content"]["properties"])
+    con = Content(data["content"])
     return Manual(publisher=con.publisher,
                   published_at=con.published_at,
                   title=con.title,
                   sections=con.sections)
-    # return Content(data["properties"]["content"]["properties"])

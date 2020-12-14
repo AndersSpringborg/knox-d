@@ -29,9 +29,6 @@ class Section:
     Data-structure for the information stored under
     each section in the "sections" array in the json file
     """
-    page: str = ''
-    header: str = ''
-    paragraphs: List[Paragraph] = []
 
     def __init__(self, data: dict = None):
         if data:
@@ -39,10 +36,8 @@ class Section:
             self.header = data.get("header", "")
 
             if 'paragraphs' in data.keys():
-                self.paragraphs: List[Paragraph] = []
-                json_paragraphs = data['paragraphs'].get("items", [])
-                for para in json_paragraphs:
-                    self.paragraphs.append(Paragraph(para['properties']))
+                json_paragraph = data.get("paragraphs", "")
+                self.paragraph = Paragraph(json_paragraph)
 
 
 class Content:
@@ -60,27 +55,30 @@ class Content:
             self.publisher = data.get("publisher")
 
             if publish_date := data.get("publishedAt"):
-                self.published_at = datetime.strptime(publish_date, '%Y-%d-%m')
+                self.published_at = datetime.strptime(publish_date, "%Y-%d-%m")
 
-            self.title = data.get("title", "")
+            self.title = data.get("title")
 
             self.sections: List[Section] = []
 
             if 'sections' in data.keys():
-                json_sections = data["sections"].get("items", [])
-                for sec in json_sections:
-                    section = sec['properties']
+                json_sections = recursive_parse_section(data)
+                for section in json_sections:
                     self.sections.append(Section(section))
 
 
 def recursive_parse_section(data: {}) -> []:
     if "sections" in data.keys():
-        section = data['sections']
-        all_sections = [section] + recursive_parse_section(section)
+        array_of_sections = data.get('sections')
+        for section in array_of_sections:
+            new_flat_array_of_section = recursive_parse_section(section)
 
-        if "sections" in all_sections[0].keys():
-            del all_sections[0]['sections']
+            if "sections" in section.keys():
+                del section['sections']
 
-        return all_sections
+            array_of_sections = array_of_sections + new_flat_array_of_section
+
+        return array_of_sections
+
     else:
         return []
