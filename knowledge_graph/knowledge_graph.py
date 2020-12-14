@@ -7,7 +7,6 @@ import requests
 from knowledge_graph import triple_generation
 from rdf_parser.rdf_parser import RdfParser
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
-from resources import knox_triples
 
 
 class KnowledgeGraph:
@@ -27,7 +26,6 @@ class KnowledgeGraph:
         Generates knox_triples (subj, rel, obj) from the text which has been natural language processed
         and the metadata extracted from a Content object
         """
-
         self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_metadata(kg_info.content))
         self.knowledge_graph_triples.extend(triple_generation.generate_triples_for_sentences(kg_info.sentences))
 
@@ -76,15 +74,20 @@ class KnowledgeGraph:
     def save_to_database(self):
         data = self.__generate_data()
 
-        # Remember: ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
+        self.__update_triples(data)
+        self.__commit_triples()
+
+    def __update_triples(self, data):
         update_url = 'http://127.0.0.1:8080/update/'
-        commit_url = 'http://127.0.0.1:8080/commit/'
         update_header: dict = {'content-type':
                                    'application/json; charset=utf-8'}
         response = requests.post(update_url,
                                  data=data,
                                  headers=update_header)
         self.__print_response(response)
+
+    def __commit_triples(self):
+        commit_url = 'http://127.0.0.1:8080/commit/'
 
         response = requests.post(commit_url)
         self.__print_response(response)
@@ -101,5 +104,4 @@ class KnowledgeGraph:
     @staticmethod
     def __print_response(response):
         print("Status code: ", response.status_code)
-        print("Printing Entire Post Request")
         print(response.text)
