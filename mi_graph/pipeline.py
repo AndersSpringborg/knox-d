@@ -19,7 +19,6 @@ def create_knowledge_graph(manual):
     knowledge_graph = KnowledgeGraph()
     knowledge_graph.generate_triples(kg_info)
     knowledge_graph.save_to_database()
-    knowledge_graph.save_word_counts()
     return knowledge_graph
 
 
@@ -58,7 +57,6 @@ def generate_word_counts(manual: Manual):
 
     for doc in word_counter:
         form = {}
-        lol = word_counter[doc].items()
         words = [{'word': word, 'amount': frequency} for word, frequency in word_counter[doc].items()]
         form['words'] = words
 
@@ -77,11 +75,11 @@ def generate_word_counts(manual: Manual):
         response = requests.post(url, data=json_form, headers=header)
         print("Status code: ", response.status_code)
         print("Printing Entire Post Request")
-        print(response.json())
+        print(response)
 
 
 def run(manual, visualize=False):
-    knowledge_graph = None  # create_knowledge_graph(manual)
+    knowledge_graph = create_knowledge_graph(manual)
     generate_word_counts(manual)
 
     # If --visualisation" or "-v" in args

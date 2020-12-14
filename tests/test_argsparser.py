@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from mi_graph import setup_parser
+from mi_graph.util import setup_parser
 
 
 class TestArgsParser:
@@ -8,7 +8,7 @@ class TestArgsParser:
         self.mi_parser = setup_parser(parser)
 
     def test_parses_visual_option(self):
-        args = ['-v', 'some_file']
+        args = ['-v', "some_file"]
 
         parser = self.mi_parser.parse_args(args)
 

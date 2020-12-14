@@ -27,6 +27,9 @@ class TermFrequency:
             self.__doc[key] = DocCounter()
         return self.__doc[key]
 
+    def __iter__(self):
+        return iter(self.__doc)
+
     def process(self, doc_title: str, sentence: str):
         """
         Process text, given a document title

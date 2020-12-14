@@ -15,13 +15,13 @@ from resources.random_number_gen import random_percentage_count
 def setup_parser(_parser: ArgumentParser) -> ArgumentParser:
     _parser.prog = "mi-graph"
 
-    _parser.add_argument("--file", help="Please indicate the json file you want to process.", required=False)
+    _parser.add_argument("file", help="Please indicate the json file you want to process.")
 
     _parser.add_argument("--visualisation", "-v", action="store_true", default=False,
                          help="This option visualizes the graph with plotly, "
                               "after the script has run")
 
-    _parser.add_argument("--serve", "-s", action="store_true", default=False,
+    _parser.add_argument("--serve", "-s", action="store_true",
                          help="This option runs mi_graph as an API")
 
     return _parser
