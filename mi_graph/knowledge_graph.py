@@ -30,7 +30,7 @@ class KnowledgeGraph:
         """
 
         self.knowledge_graph_triples.extend(
-            triple_generation.generate_triples_for_metadata(kg_info.content))
+            triple_generation.generate_triples_for_metadata(kg_info.manual))
         self.knowledge_graph_triples.extend(
             triple_generation.generate_triples_for_sentences(kg_info.sentences))
 
