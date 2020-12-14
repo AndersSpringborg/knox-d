@@ -49,7 +49,7 @@ class Content:
     """
     Data-structure for the information stored under "content" in the json file
     """
-    publisher: str = ''
+    published_by: str = ''
     published_at: str = ''
     title: str = ''
     sections: List[Section] = []
@@ -57,9 +57,9 @@ class Content:
     def __init__(self, data: dict = None):
 
         if data:
-            self.publisher = data.get("publisher")
+            self.published_by = data.get("published_by")
 
-            if publish_date := data.get("publishedAt"):
+            if publish_date := data.get("published_at"):
                 self.published_at = publish_date
 
             self.title = data.get("title")

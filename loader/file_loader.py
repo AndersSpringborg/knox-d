@@ -12,7 +12,7 @@ def load_json(io_stream):
 
 def instantiate_content_object(data: dict):
     con = Content(data["content"])
-    return Manual(publisher=con.publisher,
+    return Manual(publisher=con.published_by,
                   published_at=con.published_at,
                   title=con.title,
                   sections=con.sections)
