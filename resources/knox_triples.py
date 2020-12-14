@@ -114,8 +114,9 @@ class TitleTriple(MetaDataTriple):
 
 
 class SectionTriple(Triple):
-    def __init__(self, section_uri, section_title):
-        self.section_uri = section_uri
+    def __init__(self, content_title, section_title):
+        self.section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=section_title,
+                                                           sub_uris=["manual", content_title, "section"])
         self.section_title = section_title
 
     def subj_(self):
@@ -129,8 +130,10 @@ class SectionTriple(Triple):
 
 
 class PageTriple(Triple):
-    def __init__(self, page_uri, page_number):
-        self.page_uri = page_uri
+    def __init__(self, content_title, page_number):
+        self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
+                                                        ref=page_number,
+                                                        sub_uris=["manual", content_title, "section", "page"])
         self.page_number = page_number
 
     def subj_(self):
@@ -144,9 +147,13 @@ class PageTriple(Triple):
 
 
 class PageInSectionTriple(Triple):
-    def __init__(self, page_uri, section_uri):
-        self.page_uri = page_uri
-        self.section_uri = section_uri
+    def __init__(self, content_title, page_number, section_title):
+        self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
+                                                        ref=page_number,
+                                                        sub_uris=["manual", content_title, "section", "page"])
+        self.section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
+                                                           ref=section_title,
+                                                           sub_uris=["manual", content_title, "section"])
 
     def subj_(self):
         return self.page_uri
