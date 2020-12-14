@@ -87,11 +87,8 @@ class KnowledgeGraph:
         # Remember: ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
         update_url = 'http://127.0.0.1:8080/update/'
 
-        update_header: dict = {'content-type':
-                                   'application/json; charset=utf-8'}
-        response = requests.post(update_url,
-                                 data=data,
-                                 headers=update_header)
+        update_header: dict = {'content-type': 'application/json; charset=utf-16'}
+        response = requests.post(update_url, data=data.encode('utf-16'), headers=update_header)
         self.__print_response(response)
 
     def __commit_triples(self):
