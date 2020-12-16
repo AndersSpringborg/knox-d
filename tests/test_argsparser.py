@@ -8,7 +8,7 @@ class TestArgsParser:
         self.mi_parser = setup_parser(parser)
 
     def test_parses_visual_option(self):
-        args = ['-v', "some_file"]
+        args = ['--visualisation', 'file']
 
         parser = self.mi_parser.parse_args(args)
 
@@ -20,7 +20,7 @@ class TestArgsParser:
         assert "visualizes the graph" in helper_msg
 
     def test_visual_default_is_false(self):
-        empty_args = [' ']
+        empty_args = ['file']
 
         parser = self.mi_parser.parse_args(empty_args)
 

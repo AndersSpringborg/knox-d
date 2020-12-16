@@ -7,7 +7,7 @@ import spacy
 from spacy.cli import download
 
 from loader.file_loader import load_json
-from mi_graph import api, pipeline
+from mi_graph import api, pipeline, __version__
 from resources.error import error
 
 MODE_FILE = 'file'
@@ -17,12 +17,13 @@ MODE_SERVE = 'flask'
 def setup_parser(parser: ArgumentParser) -> ArgumentParser:
     parser.prog = "mi-graph"
 
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
     parser.add_argument("mode", choices=[MODE_FILE, MODE_SERVE],
                         help='Choose if you want to process a file, or run the program as a rest api')
     parser.add_argument("--file", "-f", help="Please indicate the json file you want to process.",
                         metavar='')  # makes help prettier
 
-    parser.add_argument("--visualisation", "-v", action="store_true", default=False,
+    parser.add_argument("--visualisation", action="store_true", default=False,
                         help="This option visualizes the graph with plotly, "
                              "after the script has run")
     return parser
