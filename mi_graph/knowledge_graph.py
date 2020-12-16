@@ -8,6 +8,7 @@ import requests
 
 from mi_graph import triple_generation
 from rdf_parser.rdf_parser import RdfParser
+from resources.error import error
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
 
 
@@ -102,8 +103,8 @@ class KnowledgeGraph:
         for triple in self.knowledge_graph_triples:
             try:
                 data += repr(triple) + " .\n"
-            except KeyError:
-                pass
+            except KeyError as err:
+                error("The key is wrong", err)
         return data
 
     @staticmethod

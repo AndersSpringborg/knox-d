@@ -130,6 +130,7 @@ class SectionTriple(Triple):
     """
     Define a section
     """
+
     def __init__(self, content_title, section_title):
         self.section_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri, ref=section_title,
                                                            sub_uris=["manual", content_title, "section"])
@@ -150,6 +151,7 @@ class PageTriple(Triple):
     """
     Define a page
     """
+
     def __init__(self, content_title, page_number):
         self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
                                                         ref=page_number,
@@ -170,6 +172,7 @@ class PageInSectionTriple(Triple):
     """
     Defines a relation between a page and a section
     """
+
     def __init__(self, content_title, page_number, section_title):
         self.page_uri = rdf_helper.generate_rdf_uri_ref(GRUNDFOS.uri,
                                                         ref=page_number,
@@ -194,6 +197,7 @@ class SentenceTriple(Triple):
     """
 
     def __init__(self, subj, rel, obj):
+        super().__init__()
         self.subj = subj
         self.rel = rel
         self.obj = obj
@@ -210,3 +214,6 @@ class SentenceTriple(Triple):
         except KeyError:
             term = self.blank_node(self.obj)
         return term
+
+    def __repr__(self):
+        return "<" + str(self.subj_()) + "> " + "<" + str(self.rel_()) + "> " + "<" + str(self.obj_()) + ">"

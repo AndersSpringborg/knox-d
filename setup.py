@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 
-def REQUIREMENTS():
+def requirements():
     return [i.strip() for i in open("requirements.txt").readlines()]
 
 
@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://git.its.aau.dk/Knox/mi-graph",
     packages=setuptools.find_packages(),
-    install_requires=REQUIREMENTS(),
+    install_requires=requirements(),
     entry_points={"console_scripts": ['mi_graph=mi_graph:cli']},
     classifiers=[
         "Programming Language :: Python :: 3",
