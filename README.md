@@ -10,6 +10,12 @@ To download the module run the following command:
 pip install --extra-index-url https://repos.knox.cs.aau.dk knox-mi-graph
 ```
 
+### Demo
+
+```bash
+python -c "from mi_graph.util import cli; cli()" file -f examples/use_this_grundfos_manual.json --visualisation
+```
+
 ### List of commandline arguments
 
 MI-Graph supports the following arguments.
@@ -34,7 +40,8 @@ There is two alternatives to run the program when developing:
 #### Option 1
 
 ```
-python -c "from mi_graph import cli; cli()"
+# RdfLib prints their version, because its run from the cli, and not a script
+python -c "from mi_graph.util import cli; cli()"
 ```
 
 #### Option 2
@@ -42,7 +49,7 @@ python -c "from mi_graph import cli; cli()"
 Wrap option 1 into a Python file which then can be executed:
 
 ```
-from mi_graph import cli
+from mi_graph.util import cli
 
 cli()
 
