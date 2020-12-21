@@ -13,14 +13,15 @@ from word_embedding.spacy_model import SpacyModel
 from .knowledge_graph import KnowledgeGraph
 
 
-def create_knowledge_graph(manual):
+def create_knowledge_graph(manual, visual=False):
     corpus = extract_all_text_from_paragraphs(manual)
     corpus = clean_text(corpus)
     tokens = extract_tokens_from(corpus)
     kg_info = KnowledgeGraphInfo(tokens, manual)
     knowledge_graph = KnowledgeGraph()
     knowledge_graph.generate_triples(kg_info)
-    knowledge_graph.save_to_database()
+    if not visual:
+        knowledge_graph.save_to_database()
     return knowledge_graph
 
 
@@ -35,7 +36,6 @@ def clean_text(corpus):
 
 
 def extract_tokens_from(corpus):
-    random_percentage_count()
     model = SpacyModel()
     model.load(corpus)
     tokens = model.tokens()
@@ -49,7 +49,7 @@ def extract_all_text_from_paragraphs(data: Manual):
     return text
 
 
-def generate_word_counts(manual: Manual):
+def generate_word_counts(manual: Manual, conn_database=False):
     cleaner = CleanerImp()
     word_counter = TermFrequency()
     for section in manual.sections:
@@ -68,26 +68,27 @@ def generate_word_counts(manual: Manual):
 
         form['totalwordsinarticle'] = word_counter[doc].length
 
-        # ´har portforward port 8080, fra server til local host
-        # ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
-        # url = 'http://knox-node02.srv.aau.dk/wordCountData/'
-        url = 'http://127.0.0.1:8080/wordCountData/'
-        json_form = json.dumps(form)
-        header: dict = {'content-type': 'application/json; charset=utf-8'}
-        response = requests.post(url, data=json_form, headers=header)
-        print("Status code: ", response.status_code)
-        print("Printing Entire Post Request")
-        print(response)
+        if conn_database:
+            # ´har portforward port 8080, fra server til local host
+            # ssh username@student.aau.dk@knox-node02.srv.aau.dk -L 8080:localhost:8080
+            # url = 'http://knox-node02.srv.aau.dk/wordCountData/'
+            url = 'http://127.0.0.1:8080/wordCountData/'
+            json_form = json.dumps(form)
+            header: dict = {'content-type': 'application/json; charset=utf-8'}
+            response = requests.post(url, data=json_form, headers=header)
+            print("Status code: ", response.status_code)
+            print("Printing Entire Post Request")
+            print(response)
 
 
 def run(manual, visualize=False):
-    knowledge_graph = create_knowledge_graph(manual)
-    generate_word_counts(manual)
-
+    knowledge_graph = create_knowledge_graph(manual, visualize)
     # If --visualisation" or "-v" in args
     if visualize:
         print("Rendering knowledge graph in new window...")
         knowledge_graph.show_graph()
         print("...Visualization closed\n\n")
+    else:
+        generate_word_counts(manual)
 
     return knowledge_graph

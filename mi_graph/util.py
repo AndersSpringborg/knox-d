@@ -20,7 +20,8 @@ def setup_parser(parser: ArgumentParser) -> ArgumentParser:
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
     parser.add_argument("mode", choices=[MODE_FILE, MODE_SERVE],
                         help='Choose if you want to process a file, or run the program as a rest api')
-    parser.add_argument("--file", "-f", help="Please indicate the json file you want to process.",
+    parser.add_argument("--file", "-f",
+                        help="Please indicate the json file you want to process. Try 'example' for an example ",
                         metavar='')  # makes help prettier
 
     parser.add_argument("--visualisation", action="store_true", default=False,
@@ -72,9 +73,11 @@ def cli():
         sys.exit(0)
 
     # Make path of the input file real and absolute. Ensures cross platform compatibility
-    path_to_file = make_path(args.file)
+    if args.file == 'example':
+        path_to_file = 'examples/use_this_grundfos_manual.json'
+    else:
+        path_to_file = make_path(args.file)
 
-    print(path_to_file)
     input_file = open(path_to_file, encoding='utf-16')
     manual = load_json(input_file)
 
