@@ -5,7 +5,6 @@ import requests
 from resources.term_frequency import TermFrequency
 from resources.json_wrapper import Manual
 from resources.knowledgegraph_info_container import KnowledgeGraphInfo
-from resources.random_number_gen import random_percentage_count
 
 from preprocess.cleaner_imp import CleanerImp
 
